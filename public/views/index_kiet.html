@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="../stylesheets/style.css">
+    <link rel="stylesheet" href="../stylesheets/common.css">
+    <link rel="stylesheet" href="../stylesheets/header.css">
+    <link rel="stylesheet" href="../stylesheets/map.css">
+
+    <!-- icon -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
+<body>
+    <!-- header -->
+    <header>
+        <nav id="leftNav">
+            <a href="./index_kiet.html">
+                <div><span class="material-symbols-outlined">
+                        globe_asia
+                    </span></div>
+            </a>
+            <a href="./profile.html">
+                <div><span class="material-symbols-outlined">
+                        account_circle
+                    </span></div>
+        </nav>
+
+        <div id="logoTitle">
+            <div id="logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/310px-Placeholder_view_vector.svg.png"
+                    alt="">
+            </div>
+            <h1 id="currentPage">Current Page Title</h1>
+        </div>
+
+        <nav id="rightNav">
+            <!-- for admin only -->
+            <a href="./admin.html">
+                <div><span class="material-symbols-outlined">
+                        folder_managed
+                    </span></div>
+            </a>
+            <a href="">
+                <div><span class="material-symbols-outlined">
+                        notifications
+                    </span></div>
+            </a>
+            <a href="./setting.html">
+                <div><span class="material-symbols-outlined">
+                        settings
+                    </span></div>
+            </a>
+        </nav>
+    </header>
+    <!-- end header -->
+
+    <!-- main -->
+    <main id="mapMain">
+        <div id="mapFrame">
+            <iframe src="https://korywka.github.io/mapbox-controls/preview/" frameborder="0"></iframe>
+        </div>
+        <div id="mapMenu">
+            <div id="mapItemContainer">
+                <div class="flex-row-wrap justify-center gap-1vw">
+                    <div>Dữ liệu được cập nhật lúc: </div>
+                    <div id="updateTime">12h</div>
+                </div>
+                <div class="mapItem">
+                    <div>
+                        <span class="material-symbols-outlined">
+                            device_thermostat
+                        </span>
+                        <p>Nhiệt độ: </p>
+                    </div>
+                    <p id="mapTemp">12</p>
+                </div>
+                <div class="mapItem">
+                    <div>
+                        <span class="material-symbols-outlined">
+                            humidity_percentage
+                        </span>
+                        <p>Độ ẩm: </p>
+                    </div>
+                    <p id="mapHumid"></p>
+                </div>
+                <div class="mapItem">
+                    <div>
+                        <span class="material-symbols-outlined">
+                            aq_indoor
+                        </span>
+                        <p>AQI: </p>
+                    </div>
+                    <p id="mapAq"></p>
+                </div>
+
+
+            </div>
+
+            <aside>
+                <div>
+                    Thông tin về chỉ số
+                </div>
+                <div>
+                    bla bla bla
+                </div>
+            </aside>
+        </div>
+    </main>
+</body>
+
+</html>

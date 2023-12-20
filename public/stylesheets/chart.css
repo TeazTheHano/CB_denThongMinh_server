@@ -1,0 +1,131 @@
+#chartMain {
+  margin: 5vh auto;
+  height: calc(100vh - 10vh - 6rem);
+  width: 90vw;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+
+  /* >> */
+  #chartMenu {
+    height: 100%;
+    width: 65%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+
+    > h1 {
+      font-size: 2.5rem;
+    }
+    /* >> */
+    #chartFrame {
+      height: 70%;
+      width: 100%;
+      padding: 1rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(100, 100, 100, 0.1);
+
+      /* >> */
+      iframe {
+        height: 100%;
+        width: 100%;
+        border-radius: 0.5rem;
+      }
+    }
+  }
+
+  /* << */
+  #mapMenu {
+    height: 100%;
+    width: calc(35% - 5vw);
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+
+    /* >> */
+    #mapItemContainer {
+      width: 100%;
+      /* border: 1px solid gray; */
+      border-radius: 2rem;
+      padding: 2rem;
+      display: flex;
+      flex-flow: column nowrap;
+      gap: 1rem;
+      box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.3);
+      /* overflow: hidden; */
+      max-height: 100%;
+      overflow-y: scroll;
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+
+      /* >> */
+      .mapItem {
+        width: 100%;
+        border: 2px solid rgba(100, 100, 100, 0.1);
+        border-radius: 1rem;
+        padding: 2rem;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        /* gap: 1rem; */
+        /* box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.1); */
+        transition: ease-in-out 0.3s;
+        cursor: pointer;
+        font-size: 1.25rem !important;
+
+        /* >> */
+        > div {
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: center;
+          gap: 1rem;
+          max-width: 70%;
+
+          /* >> */
+          > p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            /* max-width: 70%; */
+            /* font-weight: ; */
+          }
+
+          /* << */
+          > span {
+            font-size: 2rem !important;
+          }
+        }
+
+        > p {
+          width: 50%;
+          text-align: center;
+          white-space: nowrap;
+        }
+      }
+    }
+
+    /* << */
+    > aside {
+      display: flex;
+      flex-flow: column nowrap;
+      gap: 2rem;
+      margin-top: 2rem;
+
+      /* >> */
+      > div {
+        padding: 2rem;
+        box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        border-radius: 3rem;
+        text-align: center;
+      }
+    }
+  }
+}
+
+#mapItemContainer::-webkit-scrollbar {
+  /* WebKit */
+  width: 0;
+  height: 0;
+}
