@@ -2,7 +2,16 @@ var express = require('express');
 var router = express.Router();
 const fs = require("fs");
 
+let data = fs.readFileSync("./data.json");
+let dataJson = JSON.parse(data);
 
+fs.watch("./data.json", (event, filename) => {
+  if (event == "change") {
+    console.log("data.json changed");
+    data = fs.readFileSync("./data.json");
+    dataJson = JSON.parse(data);
+  }
+})
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -11,8 +20,6 @@ router.get('/', function (req, res, next) {
 
 //GET API genID
 router.get('/web/genID', function (req, res, next) {
-  let data = fs.readFileSync("./data.json");
-  let dataJson = JSON.parse(data);
   let ids = [];
   for (let i = 0; i < dataJson.length; i++) {
     ids.push(dataJson[i].id);
@@ -32,9 +39,24 @@ router.get('/web/genID', function (req, res, next) {
     newid = 0;
   }
   res.send({ id: newid, status: status });
-
-
-
 });
 
+//GET API get chart data
+router.get("/web/getChartData", (req, res, next) => {
+  const id = req.query.id;
+  if (id == undefined) {
+    res.send("id is undefined");
+    return;
+  }
+  let chartData = [];
+  for (let i = 0; i < dataJson.length; i++) {
+    if (dataJson[i].id == id) {
+      chartData.push({
+        id: dataJson[i].id,
+        measure: dataJson[i].measure,
+      });
+    }
+  }
+  res.send(chartData);
+})
 module.exports = router;

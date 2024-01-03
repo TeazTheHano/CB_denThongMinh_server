@@ -6,7 +6,7 @@ let dataJson = JSON.parse(data);
 
 fs.watch("./data.json", (event, filename) => {
     if (event == "change") {
-        console.log("data.json changed");
+        // console.log("data.json changed");
         data = fs.readFileSync("./data.json");
         dataJson = JSON.parse(data);
     }
@@ -30,26 +30,39 @@ const socketapi = {
 }
 
 io.on("connection", (socket) => {
-    console.log("[INFO] new connection: [" + socket.id + "]");
+    console.log("[SOCKET] new connection: [" + socket.id + "]");
     socket.on("message", (data) => {
         console.log(`message from ${data.clientID} on topic message`);
         socket.broadcast.emit("message", data);
     });
 
     socket.on("/esp/measure", (data) => {
-        console.log(`message from ${data.clientID} on topic /esp/measure`);
-
+        console.log(`[SOCKET] message from ${data.clientID} on topic /esp/measure`);
+        //send data to web client
         socket.broadcast.emit('/web/measure', data);
-    })
+        //add to data.json
+        dataJson.forEach(device => {
+            if (device.id == data.clientID) {
+                device.measure.push({
+                    time: Date.now(),
+                    temp: data.temp,
+                    humi: data.humi,
+                    dust: data.dust,
+                    mq7: data.mq7,
+                })
+            }
+        });
+        fs.writeFile("./data.json", JSON.stringify(dataJson));
+    });
 
     socket.on("/web/control", (data) => {
-        console.log(`message from ${data.clientID} on topic /web/control`);
+        console.log(`[SOCKET] message from ${data.clientID} on topic /web/control`);
         console.log(data);
         socket.broadcast.emit("/esp/control", data);
     });
 
     socket.on("esp/other", (data) => {
-        console.log(`message from ${data.clientID} on topic esp/other`);
+        console.log(`[SOCKET] message from ${data.clientID} on topic esp/other`);
         socket.broadcast.emit("web/other", data);
         console.log(data);
     });
@@ -57,7 +70,7 @@ io.on("connection", (socket) => {
 
     /***********register************ */
     socket.on("/esp/register-req", (data) => {
-        console.log("get message for register");
+        console.log("[SOCKET] get message for register");
         console.log(`tempID: ${data.tempID}`);
         //broadcast to all device 
         socket.broadcast.emit("/web/register-req", data);

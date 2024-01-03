@@ -4,13 +4,22 @@
     "tempID": "123",
     "username": "user1",
     "password": "123",
-    "isMaster": "1"
+    "isMaster": "1",
+    "longitude": 101,
+    "latitude": 20,
+    "measure": [
+      { "time": 1703062512209, "temp": 25, "humi": 60, "dust": 1, "mq7": 123 },
+      { "time": 1703064273807, "temp": 25, "humi": 58, "dust": 1.6, "mq7": 111 }
+    ]
   },
   {
     "id": "1",
     "tempID": "123",
     "username": "user2",
     "password": "123",
-    "isMaster": "1"
+    "isMaster": "1",
+    "longitude": 100,
+    "latitude": 20,
+    "measure": []
   }
 ]
