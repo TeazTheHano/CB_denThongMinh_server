@@ -1,3 +1,9 @@
 html {
-    font-size: 16px;
+  font-size: 16px;
+}
+
+.btn-motion:hover {
+  box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3)!important;
+  transition: ease-in-out 0.3s;
+  cursor: pointer;
 }

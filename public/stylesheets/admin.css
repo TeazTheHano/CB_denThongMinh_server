@@ -1,0 +1,234 @@
+#adminSwitch {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem auto;
+  width: fit-content;
+  border: 1px solid rgba(100, 100, 100, 0.5);
+  padding: 0.5rem;
+  border-radius: 1rem;
+
+  /* >> */
+  div {
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    transition: ease-in-out 0.3s;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  > div[status="on"] {
+    background-color: rgba(0, 94, 255, 0.228) !important;
+    font-weight: bold;
+  }
+}
+
+#adminManage {
+  #findingForm {
+    margin: 2rem auto;
+    width: 70vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    /* >> */
+    label {
+      width: 100%;
+    }
+
+    input {
+      width: 80%;
+      min-width: 20rem;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(100, 100, 100, 0.5);
+      font-size: 1.25rem;
+      margin: 1rem 0;
+    }
+
+    input[type="submit"] {
+      width: 10rem;
+      min-width: 5rem;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(100, 100, 100, 0.5);
+      font-size: 1.25rem;
+      margin: 1rem 0;
+      cursor: pointer;
+    }
+  }
+
+  div#adminMain {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 90vw;
+    margin: 2rem auto;
+    gap: 2rem;
+    justify-content: space-between;
+
+    /* >> */
+    #settingListArea {
+      display: flex;
+      flex-flow: column nowrap;
+      gap: 2rem;
+
+      /* >> */
+      .listFilter {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        font-weight: bold;
+        align-items: center;
+
+        /* >> */
+        > div[status] {
+          padding: 0.5rem;
+          cursor: pointer;
+          border-radius: 0.5rem;
+          font-weight: normal;
+
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+          }
+        }
+
+        > div[status="on"] {
+          background-color: rgba(0, 255, 191, 0.552) !important;
+          font-weight: bold;
+        }
+
+        > div[status="shut"] {
+          background-color: rgba(255, 0, 0, 0.5) !important;
+        }
+      }
+
+      #listDefault {
+        display: flex;
+        flex-flow: column nowrap;
+        height: 70vh;
+        min-width: 35rem;
+        overflow-y: scroll;
+        padding-right: 1rem;
+        border: 1px solid rgba(100, 100, 100, 0.5);
+        border-radius: 1rem;
+        padding: 1rem;
+
+        /* >> */
+        .listItem {
+          cursor: pointer;
+          padding: 1rem;
+          border-radius: 0.5rem;
+
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+
+            /* >> */
+            > div {
+              font-size: 1.15rem !important;
+              transition: ease-in-out 0.1s;
+            }
+
+            .listItemContent {
+              display: block;
+            }
+          }
+
+          /* >> */
+          .listItemContent {
+            display: none;
+          }
+        }
+      }
+    }
+
+    #settingEditArea {
+      display: flex;
+      flex-flow: column nowrap;
+      gap: 2rem;
+      width: 100%;
+
+      /* >> */
+      #settingEditAreaMap {
+        height: 50%;
+        width: 100%;
+        padding: 1rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(100, 100, 100, 0.1);
+
+        /* >> */
+        iframe {
+          height: 100%;
+          width: 100%;
+          border-radius: 0.5rem;
+        }
+      }
+
+      #settingEditAreaInfo {
+        /*  */
+      }
+    }
+  }
+}
+
+form#editInfoForm,
+#registerForm {
+  > div {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1rem;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    /* >> */
+    label {
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    input {
+      width: 80%;
+      min-width: 15rem;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(100, 100, 100, 0.5);
+      font-size: 1rem;
+    }
+  }
+
+  input[type="submit"] {
+    width: 30%;
+    min-width: 5rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(100, 100, 100, 0.5);
+    font-size: 1rem;
+    cursor: pointer;
+    float: right;
+    font-weight: bold;
+  }
+}
+
+#adminRegister > div {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  width: 90vw;
+  margin: 2rem auto;
+  gap: 5rem;
+
+  /* >> */
+  > form {
+    width: 100%;
+  }
+
+  > div {
+    width: fit-content;
+  }
+}
