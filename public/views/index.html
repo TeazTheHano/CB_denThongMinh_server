@@ -85,6 +85,10 @@
   <script>
     var socket = io();
 
+    socket.on("/web/measure", (data) => {
+      console.log(data);
+    })
+
     //register request event
     socket.on("/web/register-req", function (data) {
       console.log("new device register request");
