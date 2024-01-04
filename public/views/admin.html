@@ -4,13 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin</title>
 
     <link rel="stylesheet" href="../stylesheets/style.css">
     <link rel="stylesheet" href="../stylesheets/common.css">
     <link rel="stylesheet" href="../stylesheets/header.css">
-    <link rel="stylesheet" href="../stylesheets/map.css">
-
+    <!-- <link rel="stylesheet" href="../stylesheets/chart.css"> -->
+    <link rel="stylesheet" href="../stylesheets/modal.css">
+    <link rel="stylesheet" href="../stylesheets/admin.css">
+    <script src="../script/modal.js" defer></script>
+    <script src="../script/settingFilter.js" defer></script>
     <!-- icon -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -36,7 +39,7 @@
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/310px-Placeholder_view_vector.svg.png"
                     alt="">
             </div>
-            <h1 id="currentPage">Current Page Title</h1>
+            <h1 id="currentPage">Setting</h1>
         </div>
 
         <nav id="rightNav">
@@ -46,7 +49,7 @@
                         folder_managed
                     </span></div>
             </a>
-            <a href="">
+            <a href="" class="noti-center">
                 <div><span class="material-symbols-outlined">
                         notifications
                     </span></div>
@@ -60,56 +63,132 @@
     </header>
     <!-- end header -->
 
-    <!-- main -->
-    <main id="mapMain">
-        <div id="mapFrame">
-            <iframe src="https://korywka.github.io/mapbox-controls/preview/" frameborder="0"></iframe>
-        </div>
-        <div id="mapMenu">
-            <div id="mapItemContainer">
-                <div class="flex-row-wrap justify-center gap-1vw">
-                    <div>Dữ liệu được cập nhật lúc: </div>
-                    <div id="updateTime">12h</div>
-                </div>
-                <div class="mapItem">
-                    <div>
-                        <span class="material-symbols-outlined">
-                            device_thermostat
-                        </span>
-                        <p>Nhiệt độ: </p>
-                    </div>
-                    <p id="mapTemp">12</p>
-                </div>
-                <div class="mapItem">
-                    <div>
-                        <span class="material-symbols-outlined">
-                            humidity_percentage
-                        </span>
-                        <p>Độ ẩm: </p>
-                    </div>
-                    <p id="mapHumid"></p>
-                </div>
-                <div class="mapItem">
-                    <div>
-                        <span class="material-symbols-outlined">
-                            aq_indoor
-                        </span>
-                        <p>AQI: </p>
-                    </div>
-                    <p id="mapAq"></p>
-                </div>
+    <form id="findingForm" method="post">
+        <label for="searchInfo">
+            <h1>Tìm kiếm thông tin thiết bị</h1>
+        </label>
+        <br>
+        <input list="infoList" name="searchInfo" id="searchInfo" placeholder="Tìm kiếm thông tin thiết bị">
+        <datalist id="infoList">
+            <option value="Thông tin thiết bị">
+            <option value="Thông tin về thiết bị">
+            <option value="Thông tin về thiết bị">
+            <option value="Thông tin về thiết bị">
+            <option value="Thông tin về thiết bị">
+        </datalist>
+        <input type="submit" value="Tìm">
+    </form>
 
+    <!-- main -->
+    <main id="adminMain">
+
+        <!-- list view -->
+        <div id="settingListArea">
+            <!-- filter -->
+            <div class="listFilter">
+                <div>Sắp xếp theo: </div>
+                <div status="off">Tên</div>
+                <div status="off">Địa chỉ</div>
+                <div status="off">Trạng thái</div>
+                <div status="off">Thời gian đăng ký</div>
+                <div status="shut" class="d-none">Huỷ</div>
+            </div>
+
+            <!-- list -->
+            <div id="listDefault">
+                <div class="listItem">
+                    <div class="listItemID">000121110011</div>
+                    <div class="listItemLocation">09 Vu Pham Ham, Yen Hoa, Cau Giay, Ha Noi</div>
+                    <div class="listItemContentStatus" status="true">Đang hoạt động</div>
+                    <div class="listItemContent">
+                        <div class="listItemContentName">Nguyen Van A</div>
+                        <div class="listItemContentTel">0123456789</div>
+                    </div>
+                </div>
+                <div class="listItem">
+                    <div class="listItemID">000121110011</div>
+                    <div class="listItemLocation">09 Vu Pham Ham, Yen Hoa, Cau Giay, Ha Noi</div>
+                    <div class="listItemContentStatus" status="true">Đang hoạt động</div>
+                    <div class="listItemContent">
+                        <div class="listItemContentName">Nguyen Van A</div>
+                        <div class="listItemContentTel">0123456789</div>
+                    </div>
+                </div>
+                <div class="listItem">
+                    <div class="listItemID">000121110011</div>
+                    <div class="listItemLocation">09 Vu Pham Ham, Yen Hoa, Cau Giay, Ha Noi</div>
+                    <div class="listItemContentStatus" status="true">Đang hoạt động</div>
+                    <div class="listItemContent">
+                        <div class="listItemContentName">Nguyen Van A</div>
+                        <div class="listItemContentTel">0123456789</div>
+                    </div>
+                </div>
+                <div class="listItem">
+                    <div class="listItemID">000121110011</div>
+                    <div class="listItemLocation">09 Vu Pham Ham, Yen Hoa, Cau Giay, Ha Noi</div>
+                    <div class="listItemContentStatus" status="true">Đang hoạt động</div>
+                    <div class="listItemContent">
+                        <div class="listItemContentName">Nguyen Van A</div>
+                        <div class="listItemContentTel">0123456789</div>
+                    </div>
+                </div>
+                <div class="listItem">
+                    <div class="listItemID">000121110011</div>
+                    <div class="listItemLocation">09 Vu Pham Ham, Yen Hoa, Cau Giay, Ha Noi</div>
+                    <div class="listItemContentStatus" status="true">Đang hoạt động</div>
+                    <div class="listItemContent">
+                        <div class="listItemContentName">Nguyen Van A</div>
+                        <div class="listItemContentTel">0123456789</div>
+                    </div>
+                </div>
+                <div class="listItem">
+                    <div class="listItemID">000121110011</div>
+                    <div class="listItemLocation">09 Vu Pham Ham, Yen Hoa, Cau Giay, Ha Noi</div>
+                    <div class="listItemContentStatus" status="true">Đang hoạt động</div>
+                    <div class="listItemContent">
+                        <div class="listItemContentName">Nguyen Van A</div>
+                        <div class="listItemContentTel">0123456789</div>
+                    </div>
+                </div>
 
             </div>
 
-            <aside>
-                <div>
-                    Thông tin về chỉ số
-                </div>
-                <div>
-                    bla bla bla
-                </div>
-            </aside>
+            <!-- search result - show after search only -->
+            <div id="listResult" class="d-none">
+                
+            </div>
+        </div>
+
+        <!-- edit info -->
+        <div id="settingEditArea">
+            <div id="settingEditAreaMap">
+                <iframe src="https://korywka.github.io/mapbox-controls/preview/" frameborder="0"></iframe>
+            </div>
+            <div id="settingEditAreaInfo">
+                <form id="editInfoForm" method="post">
+                    <div>
+                        <label for="deviceName">Tên người dùng: </label>
+                        <input type="text" name="deviceName" id="deviceName" placeholder="Tên người dùng" value="">
+                    </div>
+                    <div>
+                        <label for="deviceTel">Số điện thoại: </label>
+                        <input type="text" name="deviceTel" id="deviceTel" placeholder="Số điện thoại" value="">
+                    </div>
+                    <div>
+                        <label for="deviceLocation">Địa chỉ: </label>
+                        <input type="text" name="deviceLocation" id="deviceLocation" placeholder="Địa chỉ" value="">
+                    </div>
+                    <div>
+                        <label for="deviceStatus">Trạng thái: </label>
+                        <input type="text" name="deviceStatus" id="deviceStatus" placeholder="Trạng thái" value="">
+                    </div>
+                    <div>
+                        <label for="devicePassword">Đổi mật khẩu: </label>
+                        <input type="text" name="devicePassword" id="devicePassword" placeholder="Đổi mật khẩu" value="">
+                    </div>
+                    <input type="submit" value="Lưu">
+                </form>
+            </div>
         </div>
     </main>
 </body>
