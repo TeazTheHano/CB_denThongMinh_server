@@ -52,7 +52,7 @@ io.on("connection", (socket) => {
                 })
             }
         });
-        fs.writeFile("./data.json", JSON.stringify(dataJson));
+        fs.writeFile("./data.json", JSON.stringify(dataJson), (err ) => err && console.log(err));
     });
 
     socket.on("/web/control", (data) => {
