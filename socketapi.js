@@ -45,10 +45,10 @@ io.on("connection", (socket) => {
             if (device.id == data.clientID) {
                 device.measure.push({
                     time: Date.now(),
-                    temp: data.data.temp,
-                    humi: data.data.humi,
-                    dust: data.data.dust,
-                    mq7: data.data.mq7, 
+                    temp: data.data1.temp,
+                    humi: data.data1.humi,
+                    dust: data.data1.dust,
+                    mq7: data.data1.mq7, 
                 })
             }
         });

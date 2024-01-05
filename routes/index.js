@@ -15,7 +15,19 @@ fs.watch("./data.json", (event, filename) => {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.sendFile("views/index.html", { root: 'public' });
+  res.sendFile("views/index_kiet.html", { root: 'public' });
+});
+
+router.get('/profile', function (req, res, next) {
+  res.sendFile("views/profile.html", { root: 'public' });
+});
+
+router.get('/admin', function (req, res, next) {
+  res.sendFile("views/admin.html", { root: 'public' });
+});
+
+router.get('/setting', function (req, res, next) {
+  res.sendFile("views/setting.html", { root: 'public' });
 });
 
 //GET API genID
