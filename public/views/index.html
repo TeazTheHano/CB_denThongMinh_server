@@ -72,6 +72,9 @@
       data.username = register_username.value;
       data.password = register_password.value;
       data.isMaster = document.querySelector('input[name="isMaster"]:checked').id;
+      data.longitude = register_longitude.value;
+      data.latitude = register_latitude.value;
+      data.measure = [];
       console.log(data);
       socket.emit("/web/register-done", data);
     });
@@ -81,6 +84,10 @@
   <script src="../socket.io/socket.io.js"></script>
   <script>
     var socket = io();
+
+    socket.on("/web/measure", (data) => {
+      console.log(data);
+    })
 
     //register request event
     socket.on("/web/register-req", function (data) {
@@ -107,7 +114,15 @@
       console.log('disconnected');
     });
   </script>
-
+  <script>
+    function getChartData(id) {
+      fetch("/web/getChartData?id=" + id)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+        })
+    }
+  </script>
 </body>
 
 </html>

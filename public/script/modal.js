@@ -53,7 +53,7 @@ if (indexInfo.length > 0) {
 }
 
 
-// NOTIFICATION SECTION
+// FIXME: NOTIFICATION SCRIPT SECTION
 
 // prevent default for a tag with empty href
 var aTagWithEmptyHref = document.querySelectorAll("a[href='']");
@@ -65,36 +65,47 @@ aTagWithEmptyHref.forEach(function (element) {
 
 
 // TODO: Noti data here
+let notiIcon = {
+    newConnect: 'sensors',
+    sensorsAlert: 'gpp_bad',
+}
+
 let notiData = [
     {
         notiTitle: "Thông báo 1111",
         notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiIcon: "gpp_bad"
+        notiIcon: notiIcon.sensorsAlert,
+        notiColor: 'red'
+    },
+    {
+        notiTitle: "ADMIN: Có kết nối từ thiết bị mới",
+        notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
+        notiIcon: notiIcon.newConnect,
+        notiColor: 'green'
     },
     {
         notiTitle: "Thông báo",
         notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiIcon: "gpp_bad"
+        notiIcon: notiIcon.sensorsAlert,
+        notiColor: 'red'
     },
     {
         notiTitle: "Thông báo",
         notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiIcon: "gpp_bad"
+        notiIcon: notiIcon.sensorsAlert,
+        notiColor: 'red'
     },
     {
         notiTitle: "Thông báo",
         notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiIcon: "gpp_bad"
+        notiIcon: notiIcon.sensorsAlert,
+        notiColor: 'red'
     },
     {
         notiTitle: "Thông báo",
         notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiIcon: "gpp_bad"
-    },
-    {
-        notiTitle: "Thông báo",
-        notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiIcon: "gpp_bad"
+        notiIcon: notiIcon.sensorsAlert,
+        notiColor: 'red'
     },
 ];
 
@@ -102,17 +113,25 @@ var notiCenter = document.querySelectorAll(".noti-center");
 
 // Noti gen constructor
 class NotiGen {
-    constructor(notiTitle, notiContent, notiIcon) {
+    constructor(notiTitle, notiContent, notiIcon, notiColor) {
         this.notiTitle = notiTitle;
         this.notiContent = notiContent;
         this.notiIcon = notiIcon;
+        this.notiColor = notiColor;
 
         this.notiGen = function () {
-            let noti = document.createElement("div");
+            let noti = document.createElement("a");
             noti.classList.add("modal-noti-item");
+
+            if (this.notiIcon == 'sensors') {
+                noti.setAttribute("href", "/admin");
+                console.log("sensor");
+            } else {
+                noti.setAttribute("href", "");
+            }
             noti.innerHTML = `
         <div class="modal-noti-icon">
-            <span class="material-symbols-outlined">
+            <span class="material-symbols-outlined" style="color: ${this.notiColor}">
                 ${this.notiIcon}
             </span>
         </div>
@@ -128,7 +147,7 @@ class NotiGen {
 // noti gen
 let notiGenArray = [];
 notiData.forEach(function (element) {
-    let noti = new NotiGen(element.notiTitle, element.notiContent, element.notiIcon);
+    let noti = new NotiGen(element.notiTitle, element.notiContent, element.notiIcon, element.notiColor);
     notiGenArray.push(noti);
 });
 
@@ -159,12 +178,12 @@ if (notiCenter.length > 0) {
                         dialog.removeAttribute("open");
                         dialog.setAttribute("closed", "");
                         // remove dialog after animation
-                        if (document.querySelector(".modal-noti-background").open == false) {
-                            setTimeout(function () {
+                        setTimeout(function () {
+                            if (document.querySelector(".modal-noti-background").open == false) {
                                 notiCenterBackground.remove();
                                 console.log("remove dialog");
-                            }, 5000);
-                        }
+                            }
+                        }, 5000);
                     }
                 });
             } else {
