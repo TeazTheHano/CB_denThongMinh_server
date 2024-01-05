@@ -70,42 +70,62 @@ let notiIcon = {
     sensorsAlert: 'gpp_bad',
 }
 
+let notiType = {
+    newDevice: 'newDevice',
+    newUser: 'newUser',
+    alarm: 'alarm',
+    normal: 'normal',
+}
+
+
 let notiData = [
     {
+        notiTime: '2021-05-31T15:00:00.000Z',
         notiTitle: "Thông báo 1111",
         notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiIcon: notiIcon.sensorsAlert,
-        notiColor: 'red'
+        notiType: notiType.alarm,
+        isNew: true,
+        isRead: false,
     },
     {
+        notiTime: '2021-05-31T15:00:00.000Z',
         notiTitle: "ADMIN: Có kết nối từ thiết bị mới",
         notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiIcon: notiIcon.newConnect,
-        notiColor: 'green'
+        notiType: notiType.newDevice,
+        isNew: true,
+        isRead: false,
     },
     {
+        notiTime: '2021-05-31T15:00:00.000Z',
         notiTitle: "Thông báo",
         notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiIcon: notiIcon.sensorsAlert,
-        notiColor: 'red'
+        notiType: notiType.alarm,
+        isNew: false,
+        isRead: true,
     },
     {
+        notiTime: '2021-05-31T15:00:00.000Z',
         notiTitle: "Thông báo",
         notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiIcon: notiIcon.sensorsAlert,
-        notiColor: 'red'
+        notiType: notiType.newUser,
+        isNew: true,
+        isRead: false,
     },
     {
+        notiTime: '2021-05-31T15:00:00.000Z',
         notiTitle: "Thông báo",
         notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiIcon: notiIcon.sensorsAlert,
-        notiColor: 'red'
+        notiType: notiType.alarm,
+        isNew: true,
+        isRead: false,
     },
     {
+        notiTime: '2021-05-31T15:00:00.000Z',
         notiTitle: "Thông báo",
         notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiIcon: notiIcon.sensorsAlert,
-        notiColor: 'red'
+        notiType: notiType.alarm,
+        isNew: true,
+        isRead: false,
     },
 ];
 
@@ -113,30 +133,49 @@ var notiCenter = document.querySelectorAll(".noti-center");
 
 // Noti gen constructor
 class NotiGen {
-    constructor(notiTitle, notiContent, notiIcon, notiColor) {
+    constructor(notiTitle, notiContent, notiTime, notiType, isNew, isRead) {
         this.notiTitle = notiTitle;
         this.notiContent = notiContent;
-        this.notiIcon = notiIcon;
-        this.notiColor = notiColor;
+        this.notiTime = notiTime;
+        this.notiType = notiType;
+        this.isNew = isNew;
+        this.isRead = isRead;
 
         this.notiGen = function () {
             let noti = document.createElement("a");
             noti.classList.add("modal-noti-item");
-
-            if (this.notiIcon == 'sensors') {
+            console.log(this.notiType);
+            if (this.notiType == 'newDevice') {
                 noti.setAttribute("href", "/admin");
                 console.log("sensor");
             } else {
                 noti.setAttribute("href", "");
             }
+
+            if (this.isNew) {
+                noti.classList.add("noti-new");
+            }
+            if (this.isRead) {
+                noti.classList.add("noti-read");
+            }
+
             noti.innerHTML = `
         <div class="modal-noti-icon">
-            <span class="material-symbols-outlined" style="color: ${this.notiColor}">
-                ${this.notiIcon}
+            <span class="material-symbols-outlined" style="color:
+            ${this.notiType === 'newDevice' ? 'green' :
+                    this.notiType === 'newUser' ? 'blue' :
+                        this.notiType === 'sensorsAlert' ? 'red' :
+                            'purple'}">
+            ${this.notiType === 'newDevice' ? 'sensors' :
+                    this.notiType === 'newUser' ? 'person_add' :
+                        this.notiType === 'sensorsAlert' ? 'gpp_bad' :
+                            'notifications'}
             </span>
         </div>
         <h2 class="modal-noti-h2">${this.notiTitle}</h2>
-        <div class="modal-noti-content">${this.notiContent}</div>`;
+        <div class="modal-noti-content">${this.notiContent}</div>
+        <div class="modal-noti-time">${this.notiTime}</div>
+        `;
             return noti;
         };
 
@@ -147,7 +186,7 @@ class NotiGen {
 // noti gen
 let notiGenArray = [];
 notiData.forEach(function (element) {
-    let noti = new NotiGen(element.notiTitle, element.notiContent, element.notiIcon, element.notiColor);
+    let noti = new NotiGen(element.notiTitle, element.notiContent, element.notiTime, element.notiType, element.isNew, element.isRead);
     notiGenArray.push(noti);
 });
 
