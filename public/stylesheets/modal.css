@@ -99,14 +99,12 @@
     border: 1px solid rgba(100, 100, 100, 0.5);
     right: 2vw;
     margin-top: 1rem;
-    padding: 1rem 2rem;
     border-radius: 1vw;
     background-color: white;
     box-shadow: 0.5rem 0.5rem 3rem rgba(0, 0, 0, 0.5);
     z-index: 10;
     display: flex;
     flex-direction: column;
-    gap: 2vw;
     overflow-x: hidden;
     overflow-y: scroll;
 
@@ -115,8 +113,10 @@
       display: grid;
       grid-template-areas:
         "modal-noti-icon modal-noti-h2"
-        ". modal-noti-content";
+        ". modal-noti-content"
+        ". modal-noti-time";
       gap: 0.5rem;
+      padding: 1rem 2rem;
 
       /* >> */
       > .modal-noti-icon {
@@ -124,10 +124,11 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-
+        
         /* >> */
         > span {
           font-size: 2rem;
+          background-color: white !important;
         }
       }
 
@@ -141,6 +142,16 @@
         grid-area: modal-noti-content;
         font-size: 1.25rem;
       }
+
+      .modal-noti-time {
+        grid-area: modal-noti-time;
+        font-size: 0.8rem;
+        color: rgba(100, 100, 100, 0.5);
+      }
+    }
+
+    .noti-read {
+      background-color: rgba(0, 0, 0, 0.1) !important;
     }
   }
 }
