@@ -1,13 +1,25 @@
 
 const fs = require("fs");
-
+const mongoose = require("mongoose");
 const accountModel = require("./model/account");
 
 const { isMongoReady } = require("./app");
+let isDbReady = false;
+
+isMongoReady
+    .then(() => {
+        isDbReady = true;
+        console.log("System will use mongodb instead of data.json");
+    }).catch(() => {
+        isDbReady = false;
+        console.log("System will use data.json instead of mongodb");
+    })
+
 let data;
 let dataJson;
 
-if (!isMongoReady) {
+if (!isDbReady) {
+    console.log("System will use data.json instead of mongodb");
     data = fs.readFileSync("./data.json");
     dataJson = JSON.parse(data);
 
@@ -18,6 +30,8 @@ if (!isMongoReady) {
             dataJson = JSON.parse(data);
         }
     })
+} else {
+    console.log("System will use mongodb instead of data.json");
 }
 
 
@@ -49,7 +63,7 @@ io.on("connection", (socket) => {
         //send data to web client
         socket.broadcast.emit('/web/measure', data);
 
-        if (!isMongoReady) {
+        if (!isDbReady) {
             //add to data.json
             dataJson.forEach(device => {
                 if (device.id == data.clientID) {
@@ -101,16 +115,18 @@ io.on("connection", (socket) => {
         console.log(`tempID: ${data.tempID}`);
         //broadcast to all device 
         socket.broadcast.emit("/web/register-req", data);
-        if (isMongoReady) { //only add to mongodb
+        if (isDbReady) { //only add to mongodb
             try {
+                console.log("adding noti to mongodb");
                 let acc = await accountModel.findOne({ isAdmin: true });
+                console.log(acc);
                 acc.noti.push({
                     time: Date.now(),
                     type: "newDevice",
                     title: `New device TempID:  ${data.tempID}`,
                     content: "New device want to register. please check and set ID for it",
                     isRead: false,
-                    isNew: true,
+                    isNotiNew: true,
                 })
                 await acc.save();
             } catch (error) {
@@ -122,7 +138,7 @@ io.on("connection", (socket) => {
         console.log(data);
         //check if username is exist
         let check = "";
-        if (!isMongoReady) {
+        if (!isDbReady) {
             for (let i = 0; i < dataJson.length; i++) {
                 if (dataJson[i].username === data.username) {
                     check = "Username is exist";

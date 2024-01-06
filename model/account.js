@@ -35,7 +35,7 @@ const accountSchema = new Schema({
             title: String,
             content: String,
             isRead: Boolean,
-            isNew: Boolean,
+            isNotiNew: Boolean,
         }
     ],
 });
@@ -69,3 +69,5 @@ accountSchema.virtual("newNotiCount").get(function () {
 });
 
 const accountModel = mongoose.model('account', accountSchema);
+
+module.exports = accountModel;

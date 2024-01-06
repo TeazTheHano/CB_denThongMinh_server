@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var {app} = require('../app');
 var debug = require('debug')('cb-denthongminh-server:server');
 var http = require('http');
 var socketapi = require('../socketapi');

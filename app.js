@@ -13,34 +13,30 @@ if (mongouri == "") {
     console.log("[MONGODB] MONGODB will not be connected");
     console.log("System will use data.json instead of mongodb");
 }
+console.log("[MONGODB] MONGO_URI: " + mongouri);
 
 const mongoose = require("mongoose");
 
-const isMongoReady = false;
 
 async function connectDB() {
     try {
         await mongoose.connect(mongouri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            useFindAndModify: false,
             user: mongo_username,
             pass: mongo_password,
         });
         console.log("[MONGODB] connected");
-        isMongoReady = true;
     }
-    catch {
+    catch (err) {
+        console.log(err);
         console.log("[MONGODB] connect failed");
         console.log("[MONGODB] MONGODB will not be connected");
         console.log("System will use data.json instead of mongodb");
-        isMongoReady = false;
-    } finally {
-        await mongoose.connection.close();
     }
 }
 
-connectDB().catch(console.error);
+let isMongoReady = connectDB().catch(console.error);
 
 
 var indexRouter = require('./routes/index');
