@@ -115,6 +115,8 @@ io.on("connection", (socket) => {
         console.log(`tempID: ${data.tempID}`);
         //broadcast to all device 
         socket.broadcast.emit("/web/register-req", data);
+        socket.broadcast.emit("/web/reload-noti", "oke");
+
         if (isDbReady) { //only add to mongodb
             try {
                 console.log("adding noti to mongodb");
@@ -127,8 +129,13 @@ io.on("connection", (socket) => {
                     content: "New device want to register. please check and set ID for it",
                     isRead: false,
                     isNotiNew: true,
+                    isActive: true,
                 })
                 await acc.save();
+                setTimeout(async () => {
+                    acc.noti[acc.noti.length - 1].isActive = false;
+                    await acc.save();
+                }, 2 * 60 * 1000);
             } catch (error) {
                 console.log(error);
             }

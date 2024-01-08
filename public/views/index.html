@@ -46,7 +46,7 @@
     crossorigin="anonymous"></script>
   <script>
     function genID() {
-      fetch("/web/genIDv1")
+      fetch("/web/api/genIDv2")
         .then(response => response.json())
         .then(data => {
           console.log(data);

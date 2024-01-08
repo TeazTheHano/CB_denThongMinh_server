@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const accountModel = require("../model/account");
 const fs = require("fs");
+const { body } = require('express-validator');
 
 let data = fs.readFileSync("./data.json");
 let dataJson = JSON.parse(data);
@@ -14,25 +15,66 @@ fs.watch("./data.json", (event, filename) => {
   }
 })
 
+function checkLogin(req, res, next) {
+  if (req.session.user) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+}
+
 /* GET home page. */
-router.get('/', function (req, res, next) {
-  res.sendFile("views/index.html", { root: 'public' });
+router.get('/', checkLogin, function (req, res, next) {
+  res.sendFile("views/index_kiet.html", { root: 'public' });
 });
 
-router.get('/profile', function (req, res, next) {
+router.get('/login', function (req, res, next) {
+  if (!req.session.user) {
+    res.sendFile("views/login.html", { root: 'public' });
+  } else {
+    res.redirect("/");
+  }
+});
+
+router.post('/login', async function (req, res, next) {
+  const username = req.body.loginUsername;
+  const password = req.body.loginPassword;
+  console.log(username, password);
+  if (!(username || password)) {
+    res.sendFile("views/login.html", { root: 'public' });
+  } else {
+    try {
+      let acc = await accountModel.findOne({ username: username, password: password });
+      console.log(acc);
+      if (acc != null) {
+        req.session.user = acc;
+        res.redirect("/");
+      } else {
+        res.sendFile("views/login.html", { root: 'public' });
+      }
+    } catch (err) {
+      console.log(err);
+      res.sendFile("views/login.html", { root: 'public' });
+    }
+  }
+});
+
+
+
+router.get('/profile', checkLogin, function (req, res, next) {
   res.sendFile("views/profile.html", { root: 'public' });
 });
 
-router.get('/admin', function (req, res, next) {
+router.get('/admin', checkLogin, function (req, res, next) {
   res.sendFile("views/admin.html", { root: 'public' });
 });
 
-router.get('/setting', function (req, res, next) {
+router.get('/setting', checkLogin, function (req, res, next) {
   res.sendFile("views/setting.html", { root: 'public' });
 });
 
 //GET API genID
-router.get('/web/genIDv1', function (req, res, next) {
+router.get('/web/api/genIDv1', function (req, res, next) {
   let ids = [];
   for (let i = 0; i < dataJson.length; i++) {
     ids.push(dataJson[i].id);
@@ -55,11 +97,12 @@ router.get('/web/genIDv1', function (req, res, next) {
 });
 
 //GET API genID v2 MongoDB
-router.get("/web/genIDv2", async (req, res, next) => {
+router.get("/web/api/genIDv2", async (req, res, next) => {
   let ids = [];
   let maxid = 0;
   let newid = 0;
   let status = 200;
+
   try {
     let accounts = await accountModel.find({}, { deviceID: 1 });
     for (let i = 0; i < accounts.length; i++) {
@@ -78,7 +121,7 @@ router.get("/web/genIDv2", async (req, res, next) => {
       newid = 0;
     }
     console.log(newid);
-    res.send({ id: newid, status: status });
+    res.send({ id: newid, status: status }); 
   } catch (err) {
     console.log(err);
     res.send({ id: newid, status: 400 });
@@ -92,16 +135,21 @@ router.get("/web/genIDv2", async (req, res, next) => {
  * @return : {noti:[], _id: ""}
  */
 router.get("/web/api/getNoti", async (req, res, next) => {
-  const id = req.query.id;
-  if (id == undefined) {
-    res.send("id is undefined");
+  let id = -1;
+  //auth check here 
+  if (!req.session.user) {
+    res.json("not login").status(404);
+    return;
+  } else {
+    id = req.session.user.deviceID;
+  }
+  if (id == -1 || id == undefined) {
+    res.json("id is undefined").status(404);
     return;
   }
-  //auth check here 
-
   //auth check here
   try {
-    let noti = await accountModel.findOne({ id: id }, { noti: 1 });
+    let noti = await accountModel.findOne({ deviceID: id }, { noti: 1 });
     if (noti != null) {
       res.json(noti).status(200);
     } else {

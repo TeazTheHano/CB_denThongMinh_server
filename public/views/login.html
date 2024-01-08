@@ -41,14 +41,14 @@
 
         <div style="background-color: rgba(255, 255, 255, 0.5);">
             <h2>Đăng nhập</h2>
-            <form id="loginForm" method="post">
+            <form id="loginForm" method="post" action="/login"> 
                 <div>
                     <label for="loginUsername">Tài khoản: </label>
-                    <input type="text" name="loginUsername" id="loginUsername" placeholder="ID thiết bị của bạn">
+                    <input type="text" name="loginUsername" id="loginUsername" placeholder="ID thiết bị của bạn" required>
                 </div>
                 <div>
                     <label for="loginPassword">Mật khẩu: </label>
-                    <input type="password" name="loginPassword" id="loginPassword" placeholder="Mật khẩu của bạn">
+                    <input type="password" name="loginPassword" id="loginPassword" placeholder="Mật khẩu của bạn" required>
                 </div>
                 <input type="submit" value="Đăng nhập">
             </form>

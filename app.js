@@ -2,14 +2,17 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var bodyParser = require("body-parser");
+var session = require("express-session");
+
 require('dotenv').config()
 
-const mongouri = process.env.MONGO_URI ;
+const mongouri = process.env.MONGO_URI;
 const mongo_username = process.env.MONGO_USERNAME || "";
 const mongo_password = process.env.MONGO_PASSWORD || "";
 
 if (mongouri == "") {
-    console.log("[MONGODB] MONGO_URI is empty"); 
+    console.log("[MONGODB] MONGO_URI is empty");
     console.log("[MONGODB] MONGODB will not be connected");
     console.log("System will use data.json instead of mongodb");
 }
@@ -48,9 +51,18 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+    httpOnly: false,
+    resave: true,
+    saveUninitialized: true,
+    secret: "ultimate power ultra instinct",
+    cookie: { maxAge: 1000 * 60 * 60 },
+}))
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-module.exports = {app, isMongoReady};
+module.exports = { app, isMongoReady };

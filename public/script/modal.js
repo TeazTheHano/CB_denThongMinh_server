@@ -78,56 +78,77 @@ let notiType = {
 }
 
 
-let notiData = [
-    {
-        notiTime: '2021-05-31T15:00:00.000Z',
-        notiTitle: "Thông báo 1111",
-        notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiType: notiType.alarm,
-        isNew: true,
-        isRead: false,
-    },
-    {
-        notiTime: '2021-05-31T15:00:00.000Z',
-        notiTitle: "ADMIN: Có kết nối từ thiết bị mới",
-        notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiType: notiType.newDevice,
-        isNew: true,
-        isRead: false,
-    },
-    {
-        notiTime: '2021-05-31T15:00:00.000Z',
-        notiTitle: "Thông báo",
-        notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiType: notiType.alarm,
-        isNew: false,
-        isRead: true,
-    },
-    {
-        notiTime: '2021-05-31T15:00:00.000Z',
-        notiTitle: "Thông báo",
-        notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiType: notiType.newUser,
-        isNew: true,
-        isRead: false,
-    },
-    {
-        notiTime: '2021-05-31T15:00:00.000Z',
-        notiTitle: "Thông báo",
-        notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiType: notiType.alarm,
-        isNew: true,
-        isRead: false,
-    },
-    {
-        notiTime: '2021-05-31T15:00:00.000Z',
-        notiTitle: "Thông báo",
-        notiContent: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed explicabo facilis ipsa culpa maxime harum adipisci, aut iure molestias, vel tenetur. Recusandae, harum molestias sint laboriosam provident velit corrupti vero.",
-        notiType: notiType.alarm,
-        isNew: true,
-        isRead: false,
-    },
-];
+let notiData = [];
+
+function fetchNoti() {
+    fetch("/web/api/getNoti")
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            notiData = data.noti;
+            console.log(notiData);
+            // noti gen
+            notiData.forEach(function (element) {
+                let noti = new NotiGen(element.title, element.content, element.time, element.type, element.isNotiNew, element.isRead);
+                console.log(noti);
+                notiGenArray.push(noti);
+            });
+            // noti center
+            if (notiCenter.length > 0) {
+                notiCenter.forEach(function (element) {
+                    element.querySelector('div').addEventListener("click", function () {
+                        if (document.querySelectorAll(".modal-noti-background").length == 0) {
+                            let dialog = document.createElement("dialog");
+                            dialog.classList.add("modal-noti-background");
+                            dialog.id = "notiCenterModal";
+                            let notiHolder = document.createElement("div");
+                            notiHolder.classList.add("modal-noti");
+                            dialog.appendChild(notiHolder);
+
+                            notiGenArray.forEach(function (element) {
+                                notiHolder.appendChild(element.notiGen());
+                            });
+                            element.appendChild(dialog);
+
+                            dialog.removeAttribute("closed");
+                            dialog.setAttribute("open", "");
+
+
+                            let notiCenterBackground = document.querySelector(".modal-noti-background");
+                            notiCenterBackground.addEventListener("click", function (event) {
+                                if (event.target == notiCenterBackground) {
+                                    dialog.removeAttribute("open");
+                                    dialog.setAttribute("closed", "");
+                                    // remove dialog after animation
+                                    setTimeout(function () {
+                                        if (document.querySelector(".modal-noti-background").open == false) {
+                                            notiCenterBackground.remove();
+                                            console.log("remove dialog");
+                                        }
+                                    }, 5000);
+                                }
+                            });
+                        } else {
+                            console.log("notiCenterBackground is already exist");
+                            let dialog1 = document.querySelector(".modal-noti-background");
+                            if (dialog1.open == false) {
+                                dialog1.removeAttribute("closed");
+                                dialog1.setAttribute("open", "");
+                            } else {
+                                dialog1.removeAttribute("open");
+                                dialog1.setAttribute("closed", "");
+                            }
+                        }
+                    }
+                    );
+                }
+                );
+            }
+        })
+}
+
+let notiGenArray = [];
+window.onload = fetchNoti();
 
 var notiCenter = document.querySelectorAll(".noti-center");
 
@@ -183,61 +204,6 @@ class NotiGen {
     }
 }
 
-// noti gen
-let notiGenArray = [];
-notiData.forEach(function (element) {
-    let noti = new NotiGen(element.notiTitle, element.notiContent, element.notiTime, element.notiType, element.isNew, element.isRead);
-    notiGenArray.push(noti);
-});
-
-// noti center
-if (notiCenter.length > 0) {
-    notiCenter.forEach(function (element) {
-        element.querySelector('div').addEventListener("click", function () {
-            if (document.querySelectorAll(".modal-noti-background").length == 0) {
-                let dialog = document.createElement("dialog");
-                dialog.classList.add("modal-noti-background");
-                dialog.id = "notiCenterModal";
-                let notiHolder = document.createElement("div");
-                notiHolder.classList.add("modal-noti");
-                dialog.appendChild(notiHolder);
-
-                notiGenArray.forEach(function (element) {
-                    notiHolder.appendChild(element.notiGen());
-                });
-                element.appendChild(dialog);
-
-                dialog.removeAttribute("closed");
-                dialog.setAttribute("open", "");
 
 
-                let notiCenterBackground = document.querySelector(".modal-noti-background");
-                notiCenterBackground.addEventListener("click", function (event) {
-                    if (event.target == notiCenterBackground) {
-                        dialog.removeAttribute("open");
-                        dialog.setAttribute("closed", "");
-                        // remove dialog after animation
-                        setTimeout(function () {
-                            if (document.querySelector(".modal-noti-background").open == false) {
-                                notiCenterBackground.remove();
-                                console.log("remove dialog");
-                            }
-                        }, 5000);
-                    }
-                });
-            } else {
-                console.log("notiCenterBackground is already exist");
-                let dialog1 = document.querySelector(".modal-noti-background");
-                if (dialog1.open == false) {
-                    dialog1.removeAttribute("closed");
-                    dialog1.setAttribute("open", "");
-                } else {
-                    dialog1.removeAttribute("open");
-                    dialog1.setAttribute("closed", "");
-                }
-            }
-        }
-        );
-    }
-    );
-}
+

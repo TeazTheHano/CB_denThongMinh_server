@@ -36,6 +36,7 @@ const accountSchema = new Schema({
             content: String,
             isRead: Boolean,
             isNotiNew: Boolean,
+            isActive: Boolean,
         }
     ],
 });
