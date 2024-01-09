@@ -15,8 +15,7 @@
     <script src="../script/modal.js" defer></script>
     <script src="../script/settingFilter.js" defer></script>
     <!-- icon -->
-    <link rel="stylesheet"
-        href="../image/logo1.png" />
+    <link rel="stylesheet" href="../image/logo1.png" />
 </head>
 
 <body>
@@ -160,7 +159,6 @@
                     </div>
 
                 </div>
-
                 <!-- search result - show after search only -->
                 <div id="listResult" class="d-none">
 
@@ -240,6 +238,32 @@
             </div>
         </div>
     </section>
+    <script>
+        console.log("admin.js");
+        function getListDevice() {
+            console.log("admin.js onload");
+            fetch("/web/api/getListDevice")
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    listDefault.innerHTML = "";
+                    for (let i = 0; i < data.length; i++) {
+                        if (data[i].deviceID == "0") continue;
+                        listDefault.innerHTML += `
+                        <div class="listItem">
+                            <div class="listItemID">Device ID: ${data[i].deviceID}</div>
+                            <div class="listItemLocation">Address: ${data[i].location.address}</div>
+                            <div class="listItemContentStatus" status="true">Status: Đang hoạt động</div>
+                            <div class="listItemContent">
+                                <div class="listItemContentName">Name: ${data[i].information.name}</div>
+                                <div class="listItemContentTel">Phone: ${data[i].information.phone}</div>
+                            </div>
+                        </div>`
+                    }
+                })
+        }
+        getListDevice();
+    </script>
 </body>
 
 </html>

@@ -23,6 +23,18 @@ function checkLogin(req, res, next) {
   }
 }
 
+function checkAdmin(req, res, next) {
+  if (req.session.user) {
+    if (req.session.user.isAdmin) {
+      next();
+    } else {
+      res.redirect("/");
+    }
+  } else {
+    res.redirect("/");
+  }
+}
+
 /* GET home page. */
 router.get('/', checkLogin, function (req, res, next) {
   res.sendFile("views/index_kiet.html", { root: 'public' });
@@ -65,7 +77,7 @@ router.get('/profile', checkLogin, function (req, res, next) {
   res.sendFile("views/profile.html", { root: 'public' });
 });
 
-router.get('/admin', checkLogin, function (req, res, next) {
+router.get('/admin', checkLogin, checkAdmin, function (req, res, next) {
   res.sendFile("views/admin.html", { root: 'public' });
 });
 
@@ -121,7 +133,7 @@ router.get("/web/api/genIDv2", async (req, res, next) => {
       newid = 0;
     }
     console.log(newid);
-    res.send({ id: newid, status: status }); 
+    res.send({ id: newid, status: status });
   } catch (err) {
     console.log(err);
     res.send({ id: newid, status: 400 });
@@ -154,6 +166,29 @@ router.get("/web/api/getNoti", async (req, res, next) => {
       res.json(noti).status(200);
     } else {
       res.json("noti is null").status(400);
+    }
+  } catch (err) {
+    console.log(err);
+    res.json(err).status(400);
+  }
+});
+
+router.get("/web/api/getListDevice", async (req, res, next) => {
+  //auth check here
+  if (!req.session.user) {
+    res.json("not login").status(404);
+    return;
+  }
+  if (!req.session.user.isAdmin) {
+    res.json("not admin").status(404);
+    return;
+  }
+  try {
+    let accounts = await accountModel.find({}, { location: 1, information: 1, deviceID: 1 });
+    if (accounts != null) {
+      res.json(accounts).status(200);
+    } else {
+      res.json("accounts is null").status(400);
     }
   } catch (err) {
     console.log(err);

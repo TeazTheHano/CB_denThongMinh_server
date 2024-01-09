@@ -24,6 +24,17 @@ const accountSchema = new Schema({
             mq7: Number,
         }
     ],
+    location: {
+        lat: Number,
+        long: Number,
+        address: String,
+    },
+    information: {
+        name: String,
+        phone: String,
+        email: String,
+        address: String,
+    },
     noti: [
         {
             time: Date,
