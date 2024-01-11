@@ -72,7 +72,7 @@
     <section id="adminManage">
         <form id="findingForm" method="post">
             <label for="searchInfo">
-                <h1>Tìm kiếm thông tin thiết bị</h1>
+                <h1>Tìm kiếm thông tin thiết bị (device ID)</h1>
             </label>
             <br>
             <input list="infoList" name="searchInfo" id="searchInfo" placeholder="Tìm kiếm thông tin thiết bị">
@@ -112,51 +112,7 @@
                             <div class="listItemContentTel">0123456789</div>
                         </div>
                     </div>
-                    <div class="listItem">
-                        <div class="listItemID">000121110011</div>
-                        <div class="listItemLocation">09 Vu Pham Ham, Yen Hoa, Cau Giay, Ha Noi</div>
-                        <div class="listItemContentStatus" status="true">Đang hoạt động</div>
-                        <div class="listItemContent">
-                            <div class="listItemContentName">Nguyen Van A</div>
-                            <div class="listItemContentTel">0123456789</div>
-                        </div>
-                    </div>
-                    <div class="listItem">
-                        <div class="listItemID">000121110011</div>
-                        <div class="listItemLocation">09 Vu Pham Ham, Yen Hoa, Cau Giay, Ha Noi</div>
-                        <div class="listItemContentStatus" status="true">Đang hoạt động</div>
-                        <div class="listItemContent">
-                            <div class="listItemContentName">Nguyen Van A</div>
-                            <div class="listItemContentTel">0123456789</div>
-                        </div>
-                    </div>
-                    <div class="listItem">
-                        <div class="listItemID">000121110011</div>
-                        <div class="listItemLocation">09 Vu Pham Ham, Yen Hoa, Cau Giay, Ha Noi</div>
-                        <div class="listItemContentStatus" status="true">Đang hoạt động</div>
-                        <div class="listItemContent">
-                            <div class="listItemContentName">Nguyen Van A</div>
-                            <div class="listItemContentTel">0123456789</div>
-                        </div>
-                    </div>
-                    <div class="listItem">
-                        <div class="listItemID">000121110011</div>
-                        <div class="listItemLocation">09 Vu Pham Ham, Yen Hoa, Cau Giay, Ha Noi</div>
-                        <div class="listItemContentStatus" status="true">Đang hoạt động</div>
-                        <div class="listItemContent">
-                            <div class="listItemContentName">Nguyen Van A</div>
-                            <div class="listItemContentTel">0123456789</div>
-                        </div>
-                    </div>
-                    <div class="listItem">
-                        <div class="listItemID">000121110011</div>
-                        <div class="listItemLocation">09 Vu Pham Ham, Yen Hoa, Cau Giay, Ha Noi</div>
-                        <div class="listItemContentStatus" status="true">Đang hoạt động</div>
-                        <div class="listItemContent">
-                            <div class="listItemContentName">Nguyen Van A</div>
-                            <div class="listItemContentTel">0123456789</div>
-                        </div>
-                    </div>
+
 
                 </div>
                 <!-- search result - show after search only -->
@@ -245,10 +201,12 @@
             fetch("/web/api/getListDevice")
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
+                    // console.log(data);
                     listDefault.innerHTML = "";
+                    infoList.innerHTML = "";
                     for (let i = 0; i < data.length; i++) {
                         if (data[i].deviceID == "0") continue;
+                        infoList.innerHTML += `<option value="${data[i].deviceID}">`;
                         listDefault.innerHTML += `
                         <div class="listItem">
                             <div class="listItemID">Device ID: ${data[i].deviceID}</div>
@@ -263,7 +221,26 @@
                 })
         }
         getListDevice();
+
+        const listItems = document.querySelectorAll(".listItem");
+        const listItemLocations = document.querySelectorAll(".listItemLocation");
+        const listItemContentNames = document.querySelectorAll(".listItemContentName");
+        const listItemContentTels = document.querySelectorAll(".listItemContentTel");
+
+        listItems.forEach(e => {
+            e.addEventListener("click", () => {
+
+            })
+        })
     </script>
+    <!-- socket -->
+    <!-- <script src="../socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        socket.on("connect", () => {
+            console.log("admin.js socket connected");
+        })
+    </script> -->
 </body>
 
 </html>
