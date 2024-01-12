@@ -13,7 +13,7 @@
     width: 65%;
 
     /* >> */
-    iframe {
+    #map {
       height: 100%;
       width: 100%;
     }
@@ -112,4 +112,52 @@
   /* WebKit */
   width: 0;
   height: 0;
-} 
+}
+
+.marker {
+  width: 2vw;
+  height: 2vw;
+  border-radius: 50%;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: gray;
+  border: 1px solid black;
+}
+
+.quake-info {
+  position: absolute;
+  font-family: sans-serif;
+  margin-top: 5px;
+  margin-left: 5px;
+  padding: 5px;
+  width: 30%;
+  border: 2px solid black;
+  font-size: 14px;
+  color: #222;
+  background-color: #fff;
+  border-radius: 3px;
+  z-index: 1000;
+}
+
+.mapboxgl-popup-content {
+  /* margin-bottom: 2vw; */
+  ul {
+    padding-left: 1vw;
+  }
+
+  .mapboxgl-popup-close-button {
+    padding: 0.5vw 1vw;
+
+    &:hover {
+      color: red;
+    }
+  }
+}
+
+.mapboxgl-popup-tip {
+  margin-bottom: 2vw;
+}

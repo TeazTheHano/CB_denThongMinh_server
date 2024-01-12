@@ -13,6 +13,7 @@
     "express": "~4.16.1",
     "express-session": "^1.17.3",
     "express-validator": "^7.0.1",
+    "mapbox-gl": "^3.0.1",
     "mongoose": "^8.0.3",
     "morgan": "~1.9.1",
     "socket.io": "^4.7.2"

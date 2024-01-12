@@ -8,7 +8,7 @@
   align-items: center;
 
   /* >> */
-  #chartMenu {
+  #chartContainer {
     height: 100%;
     width: 65%;
     display: flex;
@@ -36,12 +36,12 @@
   }
 
   /* << */
-  #mapMenu {
+  #chartMenu {
     height: 100%;
     width: calc(35% - 5vw);
     display: flex;
     flex-flow: column nowrap;
-    justify-content: space-between;
+    gap: 2rem;
 
     /* >> */
     #mapItemContainer {
@@ -128,4 +128,16 @@
   /* WebKit */
   width: 0;
   height: 0;
+}
+
+#angleInput {
+  -webkit-appearance: none; /* Remove default styling */
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-image: url("rotary-encoder.png"); /* Replace with your encoder image */
+  background-size: cover;
+  text-align: center;
+  font-size: 24px;
+  color: #fff;
 }
