@@ -57,36 +57,70 @@ for (let i = 0; i < 6; i++) {
 }
 
 
-let accs = [];
-for (let i = 2; i < 12; i++) {
+// let accs = [];
+// for (let i = 2; i < 12; i++) {
+// 
+// 
+//     let acc = {
+//         username: `user${i}`,
+//         password: `user${i}`,
+//         deviceID: `${i}`,
+//         isAdmin: false,
+//         location: {
+//             lat: lat[Math.floor(Math.random() * 6)],
+//             long: long[Math.floor(Math.random() * 6)],
+//             address: randomAdress[Math.floor(Math.random() * 6)],
+//         },
+//         information: {
+//             name: names[Math.floor(Math.random() * 6)],
+//             phone: phone[Math.floor(Math.random() * 6)],
+//             email: email[Math.floor(Math.random() * 6)],
+//             address: address[Math.floor(Math.random() * 6)],
+//         },
+//         noti: [],
+//     }
+//     accs.push(acc);
+// }
+// 
+// accountModel.insertMany(accs)
+//     .then(() => {
+//         console.log("insert success");
+//     })
+//     .catch((err) => {
+//         console.log(err);
+//     })
 
-
-    let acc = {
-        username: `user${i}`,
-        password: `user${i}`,
-        deviceID: `${i}`,
-        isAdmin: false,
-        location: {
-            lat: lat[Math.floor(Math.random() * 6)],
-            long: long[Math.floor(Math.random() * 6)],
-            address: randomAdress[Math.floor(Math.random() * 6)],
-        },
-        information: {
-            name: names[Math.floor(Math.random() * 6)],
-            phone: phone[Math.floor(Math.random() * 6)],
-            email: email[Math.floor(Math.random() * 6)],
-            address: address[Math.floor(Math.random() * 6)],
-        },
-        noti: [],
+async function addMeasureToAccount(deviceID, numOfMeasure) {
+    let acc = await accountModel.findOne({ deviceID: deviceID });
+    if (acc) {
+        let measure = [];
+        for (let i = 0; i < numOfMeasure; i++) {
+            let time = new Date();
+            time.setHours(time.getHours() - i);
+            let temp = Math.floor(Math.random() * 10) + 30;
+            let humi = Math.floor(Math.random() * 10) + 50;
+            let dust = Math.floor(Math.random() * 10) + 100;
+            let mq7 = Math.floor(Math.random() * 10) + 10;
+            let mq135 = Math.floor(Math.random() * 10) + 10;
+            let measureObj = {
+                time: time,
+                temp: temp,
+                humi: humi,
+                dust: dust,
+                mq7: mq7,
+                mq135: mq135,
+            }
+            measure.push(measureObj);
+        }
+        acc.measure = measure;
+        await acc.save();
+        console.log(`add measure success to acc have deviceID eq to ${deviceID}`);
     }
-    accs.push(acc);
 }
 
-accountModel.insertMany(accs)
-    .then(() => {
-        console.log("insert success");
-    })
-    .catch((err) => {
-        console.log(err);
-    })
+for (let i = 1; i < 12; i++) {
+    addMeasureToAccount(`${i}`, 10);
+}
 
+mongoose.mongo.disconnect();
+process.exit(0);
