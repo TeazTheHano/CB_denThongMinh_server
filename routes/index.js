@@ -196,6 +196,46 @@ router.get("/web/api/getListDevice", async (req, res, next) => {
   }
 });
 
+router.get("/web/api/getMeasureData", async (req, res, next) => {
+  let id = -1;
+  //auth check here 
+  if (!req.session.user) {
+    res.json("not login").status(404);
+    return;
+  } else {
+    id = req.session.user.deviceID;
+  }
+  if (id == -1 || id == undefined) {
+    res.json("id is undefined").status(404);
+    return;
+  }
+  if (req.query.id != undefined && req.session.user.isAdmin) {
+    //in case admin want to check the measure data of the specific device
+    id = req.query.id;
+  }
+  //auth check here
+  try {
+    if (id != 0) { //if normal user want to check the measure data
+      let acc = await accountModel.findOne({ deviceID: id }, { measure: 1, deviceID: 1 });
+      if (acc != null) {
+        res.json(acc).status(200);
+      } else {
+        res.json("acc is null").status(400);
+      }
+    } else { //if admin want to check the measure data of all device
+      let accs = await accountModel.find({}, { measure: 1 }).limit(10);
+      if (accs != null) {
+        res.json(accs).status(200);
+      } else {
+        res.json("accs is null").status(400);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    res.json(err).status(400);
+  }
+})
+
 //GET API get chart data
 router.get("/web/getChartData", (req, res, next) => {
   const id = req.query.id;

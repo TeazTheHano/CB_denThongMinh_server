@@ -208,6 +208,7 @@
     </section>
     <script>
         console.log("admin.js");
+        let listItem, listItemLocation, listItemContentName, listItemContentTel;
         function getListDevice() {
             console.log("admin.js onload");
             fetch("/web/api/getListDevice")
@@ -230,20 +231,21 @@
                             </div>
                         </div>`
                     }
+                    listItems = document.querySelectorAll(".listItem");
+                    listItemLocations = document.querySelectorAll(".listItemLocation");
+                    listItemContentNames = document.querySelectorAll(".listItemContentName");
+                    listItemContentTels = document.querySelectorAll(".listItemContentTel");
+
+                    listItems.forEach(e => {
+                        e.addEventListener("click", () => {
+                            let listItemID = e.querySelector(".listItemID").innerText.split(": ")[1];
+                            console.log("you clicked on " + listItemID);
+                            getMeasureDataOfDevice(listItemID);
+                        })
+                    })
                 })
         }
         getListDevice();
-
-        const listItems = document.querySelectorAll(".listItem");
-        const listItemLocations = document.querySelectorAll(".listItemLocation");
-        const listItemContentNames = document.querySelectorAll(".listItemContentName");
-        const listItemContentTels = document.querySelectorAll(".listItemContentTel");
-
-        listItems.forEach(e => {
-            e.addEventListener("click", () => {
-
-            })
-        })
     </script>
     <!-- socket -->
     <!-- <script src="../socket.io/socket.io.js"></script>
@@ -253,6 +255,7 @@
             console.log("admin.js socket connected");
         })
     </script> -->
+    <script src="../script/data.js"></script>
 </body>
 
 </html>
