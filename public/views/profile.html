@@ -14,7 +14,7 @@
     <script src="../script/modal.js" defer></script>
     <!-- icon -->
     <link rel="stylesheet"
-        href="../image/logo1.png" />
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 
 <body>
@@ -63,7 +63,7 @@
 
     <!-- main -->
     <main id="chartMain">
-        <div id="chartMenu">
+        <div id="chartContainer">
             <h1>Thông tin về thiết bị</h1>
             <div id="chartFrame">
                 <!-- TODO: CHART HERE -->
@@ -73,7 +73,18 @@
             <p>Thông tin bla bla Bla Thông tin bla bla Bla Thông tin bla bla Bla Thông tin bla bla Bla Thông tin bla bla
                 Bla Thông tin bla bla Bla Thông tin bla bla Bla </p>
         </div>
-        <div id="mapMenu">
+        <div id="chartMenu">
+            <form action="" method="post" id="bulbForm">
+                <label for="bulbFormBrightness">Độ sáng</label>
+                <input type="range" name="bulbFormBrightness" id="bulbFormBrightness" min="0" max="100" value="50">
+                <label for="bulbFormHorizonal">Xoay ngang</label>
+                <input type="range" name="bulbFormHorizonal" id="bulbFormHorizonal" min="0" max="360" value="180">
+                <label for="bulbFormVertical">Xoay dọc</label>
+                <input type="range" name="bulbFormVertical" id="bulbFormVertical" min="0" max="90" value="0">
+                <input type="submit" value="Thay đổi">
+                
+            </form>
+            <input type="number" id="angleInput" min="0" max="360">
             <div id="mapItemContainer">
                 <div class="flex-row-wrap justify-center gap-1vw">
                     <div>Dữ liệu được cập nhật lúc: </div>
@@ -120,6 +131,25 @@
             </aside> -->
         </div>
     </main>
+
+    <script>
+        const angleInput = document.getElementById("angleInput");
+
+        angleInput.addEventListener("click", () => {
+            let currentValue = parseInt(angleInput.value);
+            const increment = 15; // Adjust as needed
+
+            if (event.offsetX > angleInput.width / 2) {
+                currentValue = (currentValue + increment) % 360;
+            } else {
+                currentValue = (currentValue - increment + 360) % 360;
+            }
+
+            angleInput.value = currentValue;
+        });
+
+    </script>
 </body>
+
 
 </html>
