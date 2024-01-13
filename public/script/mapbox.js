@@ -212,230 +212,120 @@ map.on('mouseleave', 'earthquakes-viz', () => {
 
 // TODO: get data from database
 
-const devices = [
-    {
-        id: 1,
-        name: 'Device 1',
-        lat: 22.6861,
-        lng: 106.2349,
-        locationDetail: '05, Yen Bai, Viet Nam',
-        sensorData: {
-            temperature: 30,
-            humidity: 50,
-            dust: 100,
-            gas: 200,
-            windSpeed: 10,
-        },
-        time1: '01/01/2024',
-    },
-    {
-        id: 2,
-        name: 'Device 2',
-        lat: 22.6875,
-        lng: 106.2332,
-        locationDetail: '05, Yen Bai, Viet Nam',
-        sensorData: {
-            temperature: 30,
-            humidity: 50,
-            dust: 100,
-            gas: 200,
-            windSpeed: 10,
-        },
-        time1: '01/01/2024',
-    },
-    {
-        id: 3,
-        name: 'Device 3',
-        lat: 22.6881,
-        lng: 106.2311,
-        locationDetail: '05, Yen Bai, Viet Nam',
-        sensorData: {
-            temperature: 30,
-            humidity: 50,
-            dust: 100,
-            gas: 200,
-            windSpeed: 10,
-        },
-        time1: '01/01/2024',
-    },
-    {
-        id: 4,
-        name: 'Device 4',
-        lat: 22.6878,
-        lng: 106.2342,
-        locationDetail: '05, Yen Bai, Viet Nam',
-        sensorData: {
-            temperature: 30,
-            humidity: 50,
-            dust: 100,
-            gas: 200,
-            windSpeed: 10,
-        },
-        time1: '01/01/2024',
-    },
-    {
-        id: 5,
-        name: 'Device 5',
-        lat: 22.6890,
-        lng: 106.2350,
-        locationDetail: '05, Yen Bai, Viet Nam',
-        sensorData: {
-            temperature: 30,
-            humidity: 50,
-            dust: 100,
-            gas: 200,
-            windSpeed: 10,
-        },
-        time1: '01/01/2024',
-    },
-    {
-        id: 6,
-        name: 'Device 6',
-        lat: 22.6830,
-        lng: 106.2320,
-        locationDetail: '05, Yen Bai, Viet Nam',
-        sensorData: {
-            temperature: 50,
-            humidity: 10,
-            dust: 1000,
-            gas: 2000,
-            windSpeed: 120,
-        },
-        time1: '01/01/2024',
-    },
-    {
-        id: 7,
-        name: 'Device 7',
-        lat: 22.6875,
-        lng: 106.2390,
-        locationDetail: '05, Yen Bai, Viet Nam',
-        sensorData: {
-            temperature: 40,
-            humidity: 50,
-            dust: 100,
-            gas: 200,
-            windSpeed: 10,
-        },
-        time1: '01/01/2024',
-    },
-    {
-        id: 8,
-        name: 'Device 8',
-        lat: 22.6780,
-        lng: 106.2371,
-        locationDetail: '05, Yen Bai, Viet Nam',
-        sensorData: {
-            temperature: 30,
-            humidity: 50,
-            dust: 100,
-            gas: 200,
-            windSpeed: 10,
-        },
-        time1: '01/01/2024',
-    },
-    {
-        id: 9,
-        name: 'Device 9',
-        lat: 22.6850,
-        lng: 106.2382,
-        locationDetail: '05, Yen Bai, Viet Nam',
-        sensorData: {
-            temperature: 30,
-            humidity: 50,
-            dust: 100,
-            gas: 200,
-            windSpeed: 10,
-        },
-        time1: '01/01/2024',
-    },
-    {
-        id: 10,
-        name: 'Device 10',
-        lat: 22.6890,
-        lng: 106.2310,
-        locationDetail: '05, Yen Bai, Viet Nam',
-        sensorData: {
-            temperature: 30,
-            humidity: 50,
-            dust: 100,
-            gas: 200,
-            windSpeed: 10,
-        },
-        time1: '01/01/2024',
-    },
+function getDeviceData() {
+    fetch("/web/api/getData")
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            data.forEach(device => {
+                if (device.deviceID == 0) return;
+                devices.push({
+                    id: device.deviceID,
+                    lat: device.location.lat,
+                    lng: device.location.long,
+                    locationDetail: device.location.address,
+                    sensorData: {
+                        temperature: device.measure[device.measure.length - 1].temp,
+                        humidity: device.measure[device.measure.length - 1].humi,
+                        dust: device.measure[device.measure.length - 1].dust,
+                        gas: device.measure[device.measure.length - 1].mq7,
+                    },
+                })
+            })
+            addDataToGeojson();
+            addMarkers();
+        })
+}
 
-
+let devices = [
+    // {
+    //     id: 1,
+    //     lat: 22.6861,
+    //     lng: 106.2349,
+    //     locationDetail: '05, Yen Bai, Viet Nam',
+    //     sensorData: {
+    //         temperature: 30,
+    //         humidity: 50,
+    //         dust: 100,
+    //         gas: 200,
+    //         windSpeed: 10,
+    //     },
+    // },
 ];
 
 
-const geojsonDevice = {
+let geojsonDevice = {
     type: 'FeatureCollection',
     features: []
 };
 
-devices.forEach(device => {
-    geojsonDevice.features.push({
-        type: 'Feature',
-        geometry: {
-            type: 'Point',
-            coordinates: [device.lng, device.lat]
-        },
-        properties: {
-            id: device.id,
-            name: device.name,
-            locationDetail: device.locationDetail,
-            sensorData: device.sensorData
-        }
+function addDataToGeojson() {
+    devices.forEach(device => {
+        geojsonDevice.features.push({
+            type: 'Feature',
+            geometry: {
+                type: 'Point',
+                coordinates: [device.lng, device.lat]
+            },
+            properties: {
+                id: device.id,
+                name: device.name,
+                locationDetail: device.locationDetail,
+                sensorData: device.sensorData
+            }
+        });
     });
-});
+}
 
 
 // add markers to map
-geojsonDevice.features.forEach(function (marker) {
+function addMarkers() {
+    geojsonDevice.features.forEach(function (marker) {
 
-    // create a HTML element for each feature
-    var el = document.createElement('div');
-    el.className = 'marker';
-    el.id = 'marker-' + marker.properties.id;
-    el.innerText = marker.properties.sensorData.temperature;
+        // create a HTML element for each feature
+        var el = document.createElement('div');
+        el.className = 'marker';
+        el.id = 'marker-' + marker.properties.id;
+        el.innerText = marker.properties.sensorData.temperature;
 
-    // make a marker for each feature and add to the map
-    new mapboxgl.Marker(el)
-        .setLngLat(marker.geometry.coordinates)
-        .addTo(map);
+        // make a marker for each feature and add to the map
+        new mapboxgl.Marker(el)
+            .setLngLat(marker.geometry.coordinates)
+            .addTo(map);
 
-    el.addEventListener('click', function () {
-        // 1. Fly to the point
-        flyToStore(marker);
-        // 2. Close all other popups and display popup for clicked store
-        createPopUp(marker);
-        // 3. Highlight listing in sidebar (and remove highlight for all other listings)
-        var activeItem = document.getElementsByClassName('active');
-        if (activeItem[0]) {
-            activeItem[0].classList.remove('active');
+        el.addEventListener('click', function () {
+            // 1. Fly to the point
+            flyToStore(marker);
+            // 2. Close all other popups and display popup for clicked store
+            createPopUp(marker);
+            // 3. Highlight listing in sidebar (and remove highlight for all other listings)
+            var activeItem = document.getElementsByClassName('active');
+            if (activeItem[0]) {
+                activeItem[0].classList.remove('active');
+            }
+            // Find the index of the store.features that corresponds to the clicked marker id.
+            // Match the correct listing using the function that we created earlier.
+            var listing = document.getElementById('listing-' + marker.properties.id);
+            listing.classList.add('active');
+        });
+
+
+        // color and size of marker
+        if (marker.properties.sensorData.temperature > 40) {
+            el.style.backgroundColor = 'rgba(255, 0, 0, 1)';
+            el.style.width = '3vw';
+            el.style.height = '3vw';
+        } else if (marker.properties.sensorData.temperature > 30) {
+            el.style.backgroundColor = 'rgba(255, 165, 0, 0.8)';
+            el.style.width = '2.5vw';
+            el.style.height = '2.5vw';
+        } else {
+            el.style.backgroundColor = 'rgba(0, 255, 0, 0.6)';
+            el.style.width = '2vw';
+            el.style.height = '2vw';
         }
-        // Find the index of the store.features that corresponds to the clicked marker id.
-        // Match the correct listing using the function that we created earlier.
-        var listing = document.getElementById('listing-' + marker.properties.id);
-        listing.classList.add('active');
+
     });
-
-
-    // color and size of marker
-    if (marker.properties.sensorData.temperature > 40) {
-        el.style.backgroundColor = 'rgba(255, 0, 0, 1)';
-        el.style.width = '3vw';
-        el.style.height = '3vw';
-    } else if (marker.properties.sensorData.temperature > 30) {
-        el.style.backgroundColor = 'rgba(255, 165, 0, 0.8)';
-        el.style.width = '2.5vw';
-        el.style.height = '2.5vw';
-    } else {
-        el.style.backgroundColor = 'rgba(0, 255, 0, 0.6)';
-        el.style.width = '2vw';
-        el.style.height = '2vw';
-    }
-
-});
+}
 
 // >>> END of ADD POINTS OF DEVICES SECTION <<<

@@ -236,6 +236,24 @@ router.get("/web/api/getMeasureData", async (req, res, next) => {
   }
 })
 
+router.get("/web/api/getData", async (req, res, next) => {
+  if (!req.session.user) {
+    res.json("not login").status(404);
+    return;
+  }
+  try {
+    let accs = await accountModel.find({}, { measure: 1, location: 1, information: 1, deviceID: 1 });
+    if (accs != null) {
+      res.json(accs).status(200);
+    } else {
+      res.json("accs is null").status(400);
+    }
+  } catch (err) {
+    console.log(err);
+    res.json(err).status(400);
+  }
+})
+
 //GET API get chart data
 router.get("/web/getChartData", (req, res, next) => {
   const id = req.query.id;
