@@ -11,10 +11,33 @@
     <link rel="stylesheet" href="../stylesheets/header.css">
     <link rel="stylesheet" href="../stylesheets/chart.css">
     <link rel="stylesheet" href="../stylesheets/modal.css">
+    <link rel="stylesheet" href="../stylesheets/map.css">
     <script src="../script/modal.js" defer></script>
+    <script src="../script/valueRange.js" defer></script>
     <!-- icon -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        .material-symbols-rounded {
+            font-variation-settings:
+                'FILL' 1,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+        }
+    </style>
+
+    <!-- mapbox -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
+    <script src="../script/mapbox.js" defer></script>
+
+    <!-- mapbox draw tool -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.js' defer></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.css'
+        type='text/css' />
 </head>
 
 <body>
@@ -67,24 +90,58 @@
             <h1>Thông tin về thiết bị</h1>
             <div id="chartFrame">
                 <!-- TODO: CHART HERE -->
-                <iframe src="https://korywka.github.io/mapbox-controls/preview/" frameborder="0"></iframe>
+                <div id="map"></div>
                 <!-- TODO: END OF CHART -->
             </div>
-            <p>Thông tin bla bla Bla Thông tin bla bla Bla Thông tin bla bla Bla Thông tin bla bla Bla Thông tin bla bla
-                Bla Thông tin bla bla Bla Thông tin bla bla Bla </p>
+            <aside>
+                <!-- <div>
+                    Thông tin về chỉ số
+                </div> -->
+                <div class="fetch-btn">
+                    Làm mới dữ liệu
+                </div>
+            </aside>
         </div>
         <div id="chartMenu">
             <form action="" method="post" id="bulbForm">
-                <label for="bulbFormBrightness">Độ sáng</label>
-                <input type="range" name="bulbFormBrightness" id="bulbFormBrightness" min="0" max="100" value="50">
-                <label for="bulbFormHorizonal">Xoay ngang</label>
-                <input type="range" name="bulbFormHorizonal" id="bulbFormHorizonal" min="0" max="360" value="180">
-                <label for="bulbFormVertical">Xoay dọc</label>
-                <input type="range" name="bulbFormVertical" id="bulbFormVertical" min="0" max="90" value="0">
+                <div>
+                    <label for="bulbFormBrightness">Độ sáng: </label>
+                    <span id="bulbFormBrightnessValue"></span>
+                </div>
+                <div>
+                    <input type="range" name="bulbFormBrightness" id="bulbFormBrightness" min="0" max="100" value="50">
+                    <div class="form-sub">
+                        <div>0%</div>
+                        <div>100%</div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="bulbFormHorizonal">Xoay ngang: </label>
+                    <span id="bulbFormHorizonalValue"></span>
+                </div>
+                <div>
+                    <input type="range" name="bulbFormHorizonal" id="bulbFormHorizonal" min="0" max="360" value="180">
+                    <div class="form-sub">
+                        <div>0˚</div>
+                        <div>360˚</div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="bulbFormVertical">Xoay dọc: </label>
+                    <span id="bulbFormVerticalValue"></span>
+                </div>
+                <div>
+                    <input type="range" name="bulbFormVertical" id="bulbFormVertical" min="0" max="90" value="0">
+                    <div class="form-sub">
+                        <div>0˚</div>
+                        <div>90˚</div>
+                    </div>
+                </div>
                 <input type="submit" value="Thay đổi">
-                
             </form>
-            <input type="number" id="angleInput" min="0" max="360">
+
             <div id="mapItemContainer">
                 <div class="flex-row-wrap justify-center gap-1vw">
                     <div>Dữ liệu được cập nhật lúc: </div>
@@ -92,62 +149,65 @@
                 </div>
                 <div class="mapItem">
                     <div>
-                        <span class="material-symbols-outlined">
-                            device_thermostat
-                        </span>
-                        <p>Nhiệt độ: </p>
+                        <div>
+                            <span class="material-symbols-outlined">
+                                device_thermostat
+                            </span>
+                            <p>Nhiệt độ: </p>
+                        </div>
+                        <p id="mapTemp">30</p>
                     </div>
-                    <p id="mapTemp">12</p>
                 </div>
                 <div class="mapItem">
                     <div>
-                        <span class="material-symbols-outlined">
-                            humidity_percentage
-                        </span>
-                        <p>Độ ẩm: </p>
+                        <div>
+                            <span class="material-symbols-outlined">
+                                humidity_percentage
+                            </span>
+                            <p>Độ ẩm: </p>
+                        </div>
+                        <p id="mapHumid"></p>
                     </div>
-                    <p id="mapHumid"></p>
                 </div>
                 <div class="mapItem">
                     <div>
-                        <span class="material-symbols-outlined">
-                            aq_indoor
-                        </span>
-                        <p>AQI: </p>
+                        <div>
+                            <span class="material-symbols-outlined">
+                                aq_indoor
+                            </span>
+                            <p>AQI: </p>
+                        </div>
+                        <p id="mapAq"></p>
                     </div>
-                    <p id="mapAq"></p>
+                </div>
+                <div class="mapItem">
+                    <div>
+                        <div>
+                            <span class="material-symbols-outlined">
+                                masks
+                            </span>
+                            <p>Gas: </p>
+                        </div>
+                        <p id="mapGas"></p>
+                    </div>
                 </div>
 
 
             </div>
 
-            <!-- <aside>
-                <div>
-                    Thông tin về chỉ số
-                </div>
-                <div>
-                    bla bla bla
-                </div>
-            </aside> -->
         </div>
     </main>
 
     <script>
-        const angleInput = document.getElementById("angleInput");
-
-        angleInput.addEventListener("click", () => {
-            let currentValue = parseInt(angleInput.value);
-            const increment = 15; // Adjust as needed
-
-            if (event.offsetX > angleInput.width / 2) {
-                currentValue = (currentValue + increment) % 360;
-            } else {
-                currentValue = (currentValue - increment + 360) % 360;
-            }
-
-            angleInput.value = currentValue;
+        document.getElementById('bulbFormBrightness').addEventListener('input', function (e) {
+            document.getElementById('bulbFormBrightnessValue').textContent = e.target.value;
         });
-
+        document.getElementById('bulbFormHorizonal').addEventListener('input', function (e) {
+            document.getElementById('bulbFormHorizonalValue').textContent = e.target.value;
+        });
+        document.getElementById('bulbFormVertical').addEventListener('input', function (e) {
+            document.getElementById('bulbFormVerticalValue').textContent = e.target.value;
+        });
     </script>
 </body>
 

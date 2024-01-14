@@ -1,3 +1,4 @@
+
 const magDisplay = document.getElementById('mag');
 const locDisplay = document.getElementById('loc');
 const dateDisplay = document.getElementById('date');
@@ -145,6 +146,7 @@ map.on('load', () => {
 
 // >>> EARHQUAKE SECTION <<<
 map.on('mousemove', 'earthquakes-viz', (event) => {
+    document.querySelector('.quake-info').style.display = 'block';
     map.getCanvas().style.cursor = 'pointer';
     // Set constants equal to the current feature's magnitude, location, and time
     const quakeMagnitude = event.features[0].properties.mag;
@@ -183,6 +185,7 @@ map.on('mousemove', 'earthquakes-viz', (event) => {
 });
 
 map.on('mouseleave', 'earthquakes-viz', () => {
+    document.querySelector('.quake-info').style.display = 'none';
     if (quakeID) {
         map.setFeatureState(
             {
@@ -305,8 +308,8 @@ function addMarkers() {
             }
             // Find the index of the store.features that corresponds to the clicked marker id.
             // Match the correct listing using the function that we created earlier.
-            var listing = document.getElementById('listing-' + marker.properties.id);
-            listing.classList.add('active');
+            // var listing = document.getElementById('listing-' + marker.properties.id);
+            // listing.classList.add('active');
         });
 
 
@@ -329,3 +332,12 @@ function addMarkers() {
 }
 
 // >>> END of ADD POINTS OF DEVICES SECTION <<<
+
+getDeviceData();
+
+document.querySelectorAll('.fetch-btn').forEach(element => {
+    element.style.cursor = 'pointer';
+    element.addEventListener('click', function () {
+        getDeviceData();
+    })
+})

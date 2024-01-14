@@ -27,7 +27,7 @@
       border: 1px solid rgba(100, 100, 100, 0.1);
 
       /* >> */
-      iframe {
+      #map {
         height: 100%;
         width: 100%;
         border-radius: 0.5rem;
@@ -62,65 +62,124 @@
       /* >> */
       .mapItem {
         width: 100%;
-        border: 2px solid rgba(100, 100, 100, 0.1);
         border-radius: 1rem;
-        padding: 2rem;
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: space-between;
-        align-items: center;
+        padding: 1rem;
         /* gap: 1rem; */
         /* box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.1); */
         transition: ease-in-out 0.3s;
         cursor: pointer;
-        font-size: 1.25rem !important;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
 
-        /* >> */
         > div {
+          width: 100%;
+          height: 100%;
           display: flex;
           flex-flow: row nowrap;
+          justify-content: space-between;
           align-items: center;
-          gap: 1rem;
-          max-width: 70%;
+          font-size: 1.25rem !important;
+          background-color: rgba(255, 255, 255, 0.6);
+          padding: 1rem;
+          border-radius: 1rem;
 
           /* >> */
+          > div {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            gap: 1rem;
+            max-width: 70%;
+
+            /* >> */
+            > p {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              /* max-width: 70%; */
+              /* font-weight: ; */
+            }
+
+            /* << */
+            > span {
+              font-size: 2rem !important;
+            }
+          }
+
           > p {
+            width: 50%;
+            text-align: center;
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            /* max-width: 70%; */
-            /* font-weight: ; */
-          }
-
-          /* << */
-          > span {
-            font-size: 2rem !important;
           }
         }
+      }
+    }
 
-        > p {
-          width: 50%;
-          text-align: center;
-          white-space: nowrap;
-        }
+    #bulbForm {
+      display: flex;
+      flex-flow: column nowrap;
+      gap: 0.25rem;
+
+      /* >> */
+      input[type="range"] {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 1.5rem;
+        border-radius: 0.5rem;
+        background-color: rgba(100, 100, 100, 0.1);
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: 0.2s;
+        transition: opacity 0.2s;
+        /* make it circle */
+        border: none;
+        cursor: pointer;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        background: #4caf50;
+        cursor: pointer;
+      }
+
+      div.form-sub {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 0 1rem;
+      }
+
+      #bulbFormBrightness {
+        /* gradient backgound-color */
+        background: linear-gradient(
+          to right,
+          #00000092 0%,
+          rgba(255, 255, 255, 0.1) 100%
+        );
+        border: 1px solid rgba(100, 100, 100, 0.5);
+      }
+
+      input[type="submit"] {
+        width: 100%;
+        height: 3rem;
+        border-radius: 0.5rem;
+        background-color: #4c98af;
+        color: white;
+        font-size: 1.25rem;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
       }
     }
 
     /* << */
-    > aside {
-      display: flex;
-      flex-flow: column nowrap;
-      gap: 2rem;
-      margin-top: 2rem;
-
-      /* >> */
-      > div {
-        padding: 2rem;
-        box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.15);
-        border-radius: 3rem;
-        text-align: center;
-      }
-    }
   }
 }
 
@@ -130,14 +189,18 @@
   height: 0;
 }
 
-#angleInput {
-  -webkit-appearance: none; /* Remove default styling */
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background-image: url("rotary-encoder.png"); /* Replace with your encoder image */
-  background-size: cover;
-  text-align: center;
-  font-size: 24px;
-  color: #fff;
+aside {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 2rem;
+  margin-top: 2rem;
+
+  /* >> */
+  > div {
+    width: 25rem;
+    padding: 2rem;
+    box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 3rem;
+    text-align: center;
+  }
 }
