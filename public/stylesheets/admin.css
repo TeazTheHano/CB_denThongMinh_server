@@ -161,7 +161,7 @@
         border: 1px solid rgba(100, 100, 100, 0.1);
 
         /* >> */
-        iframe {
+        #map {
           height: 100%;
           width: 100%;
           border-radius: 0.5rem;
