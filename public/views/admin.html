@@ -12,6 +12,7 @@
     <!-- <link rel="stylesheet" href="../stylesheets/chart.css"> -->
     <link rel="stylesheet" href="../stylesheets/modal.css">
     <link rel="stylesheet" href="../stylesheets/admin.css">
+    <link rel="stylesheet" href="../stylesheets/map.css">
     <script src="../script/modal.js" defer></script>
     <script src="../script/settingFilter.js" defer></script>
     <!-- icon -->
@@ -28,6 +29,16 @@
                 'opsz' 24
         }
     </style>
+
+    <!-- mapbox -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
+    <script src="../script/mapbox.js" defer></script>
+
+    <!-- mapbox draw tool -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.js' defer></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.css'
+        type='text/css' />
 </head>
 
 <body>
@@ -136,7 +147,7 @@
             <!-- edit info -->
             <div id="settingEditArea">
                 <div id="settingEditAreaMap">
-                    <iframe src="https://korywka.github.io/mapbox-controls/preview/" frameborder="0"></iframe>
+                    <div id="map"></div>
                 </div>
                 <div id="settingEditAreaInfo">
                     <form id="editInfoForm" method="post">
@@ -155,11 +166,6 @@
                         <div>
                             <label for="deviceStatus">Trạng thái: </label>
                             <input type="text" name="deviceStatus" id="deviceStatus" placeholder="Trạng thái" value="">
-                        </div>
-                        <div>
-                            <label for="devicePassword">Đổi mật khẩu: </label>
-                            <input type="text" name="devicePassword" id="devicePassword" placeholder="Đổi mật khẩu"
-                                value="">
                         </div>
                         <input type="submit" value="Lưu">
                     </form>
@@ -182,6 +188,10 @@
                     <input type="text" name="registerName" id="registerName" placeholder="Tên người dùng">
                 </div>
                 <div>
+                    <label for="registerPassword">Mật khẩu: </label>
+                    <input type="text" name="registerPassword" id="registerPassword" placeholder="Mật khẩu">
+                </div>
+                <div>
                     <label for="registerTel">Số điện thoại: </label>
                     <input type="text" name="registerTel" id="registerTel" placeholder="Số điện thoại">
                 </div>
@@ -192,10 +202,6 @@
                 <div>
                     <label for="registerStatus">Trạng thái: </label>
                     <input type="text" name="registerStatus" id="registerStatus" placeholder="Trạng thái">
-                </div>
-                <div>
-                    <label for="registerPassword">Đổi mật khẩu: </label>
-                    <input type="text" name="registerPassword" id="registerPassword" placeholder="Đổi mật khẩu">
                 </div>
                 <input type="submit" value="Đăng ký">
             </form>
