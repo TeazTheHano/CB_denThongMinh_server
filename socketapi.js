@@ -102,8 +102,30 @@ io.on("connection", (socket) => {
         socket.broadcast.emit("/esp/control", data);
     });
 
-    socket.on("esp/other", (data) => {
+    socket.on("esp/other", async (data) => {
         console.log(`[SOCKET] message from ${data.clientID} on topic esp/other`);
+        if (data.data == "RUNG") {
+            try {
+                console.log("got earthquake warning. Adding noti to mongodb");
+                //add noti to all accs 
+                let res = await accountModel.updateMany({}, {
+                    $push: {
+                        noti: {
+                            time: Date.now(),
+                            type: "alarm",
+                            title: "Earthquake warning",
+                            content: "Earthquake warning. Please check your device",
+                            isRead: false,
+                            isNotiNew: true,
+                            isActive: true,
+                        }
+                    }
+                });
+                console.log("added noti to " + res.modifiedCount + " accs");
+            } catch (error) {
+                console.log(error);
+            }
+        }
         socket.broadcast.emit("web/other", data);
         console.log(data);
     });
