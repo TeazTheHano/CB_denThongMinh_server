@@ -109,7 +109,7 @@
                     <span id="bulbFormBrightnessValue"></span>
                 </div>
                 <div>
-                    <input type="range" name="bulbFormBrightness" id="bulbFormBrightness" min="0" max="100" value="50">
+                    <input type="range" name="bulbFormBrightness" id="bulbFormBrightness" min="0" max="100" value="0">
                     <div class="form-sub">
                         <div>0%</div>
                         <div>100%</div>
@@ -121,7 +121,7 @@
                     <span id="bulbFormHorizonalValue"></span>
                 </div>
                 <div>
-                    <input type="range" name="bulbFormHorizonal" id="bulbFormHorizonal" min="0" max="360" value="180">
+                    <input type="range" name="bulbFormHorizonal" id="bulbFormHorizonal" min="0" max="360" value="0">
                     <div class="form-sub">
                         <div>0˚</div>
                         <div>360˚</div>
@@ -133,10 +133,10 @@
                     <span id="bulbFormVerticalValue"></span>
                 </div>
                 <div>
-                    <input type="range" name="bulbFormVertical" id="bulbFormVertical" min="0" max="90" value="0">
+                    <input type="range" name="bulbFormVertical" id="bulbFormVertical" min="0" max="180" value="0">
                     <div class="form-sub">
                         <div>0˚</div>
-                        <div>90˚</div>
+                        <div>180˚</div>
                     </div>
                 </div>
                 <input type="submit" value="Thay đổi">
@@ -208,6 +208,41 @@
         document.getElementById('bulbFormVertical').addEventListener('input', function (e) {
             document.getElementById('bulbFormVerticalValue').textContent = e.target.value;
         });
+    </script>
+
+    <!-- socket -->
+    <script src="../socket.io/socket.io.js"></script>
+    <script>
+
+        let control = {
+            brightness: 0,
+            horizonal: 0,
+            vertical: 0
+        }
+
+        let socket = io();
+        socket.on('connect', () => {
+            console.log('connected');
+        });
+
+        socket.on('disconnect', () => {
+            console.log('disconnected');
+        });
+
+        socket.on("/web/reload-noti", (data) => {
+            console.log("reloading noti");
+            fetchNoti();
+        })
+
+        let submit_btn = document.querySelector('input[type="submit"]');
+        submit_btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            control.brightness = bulbFormBrightness.value;
+            control.horizonal = bulbFormHorizonal.value;
+            control.vertical = bulbFormVertical.value;
+
+            socket.emit("/web/control", control);
+        })
     </script>
 </body>
 

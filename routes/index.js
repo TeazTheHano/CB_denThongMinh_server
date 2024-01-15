@@ -241,8 +241,12 @@ router.get("/web/api/getData", async (req, res, next) => {
     res.json("not login").status(404);
     return;
   }
+  let filter = { deviceID: req.session.user.deviceID }
+  if (req.session.user.isAdmin) {
+    filter = {  }
+  }
   try {
-    let accs = await accountModel.find({}, { measure: 1, location: 1, information: 1, deviceID: 1 });
+    let accs = await accountModel.find(filter, { measure: 1, location: 1, information: 1, deviceID: 1 });
     if (accs != null) {
       res.json(accs).status(200);
     } else {

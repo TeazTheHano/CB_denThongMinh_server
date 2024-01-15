@@ -54,15 +54,17 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({
+const sessionMiddleware = session({
     httpOnly: false,
     resave: true,
     saveUninitialized: true,
     secret: "ultimate power ultra instinct",
     cookie: { maxAge: 1000 * 60 * 60 },
-}))
+})
+
+app.use(sessionMiddleware)
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-module.exports = { app, isMongoReady };
+module.exports = { app, isMongoReady, sessionMiddleware };

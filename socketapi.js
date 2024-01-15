@@ -2,7 +2,8 @@
 const fs = require("fs");
 const mongoose = require("mongoose");
 const accountModel = require("./model/account");
-
+const { sessionMiddleware } = require("./app");
+const sharedsession = require("express-socket.io-session");
 const { isMongoReady } = require("./app");
 let isDbReady = false;
 
@@ -51,7 +52,12 @@ const socketapi = {
     io: io
 }
 
+io.use(sharedsession(sessionMiddleware, {
+    autoSave: true
+}))
+
 io.on("connection", (socket) => {
+    // console.log(socket.handshake.session) //session of the current socket (only for loggged in user)
     console.log("[SOCKET] new connection: [" + socket.id + "]");
     socket.on("message", (data) => {
         console.log(`message from ${data.clientID} on topic message`);
@@ -99,7 +105,24 @@ io.on("connection", (socket) => {
     socket.on("/web/control", (data) => {
         console.log(`[SOCKET] message from ${data.clientID} on topic /web/control`);
         console.log(data);
-        socket.broadcast.emit("/esp/control", data);
+        if (!socket.handshake.session.user) {
+            return;
+        }
+        if (socket.handshake.session.user.isAdmin) {
+            //admin dont have deviceID
+            console.log("[SOCKET - ALERT] admin dont have deviceID")
+            return;
+        }
+        let outgoing = {
+            ID: socket.handshake.session.user.deviceID,
+            data: {
+                step: Math.floor(data.horizonal * 200 / 360), //200 step means 360 degree
+                servo: data.vertical, //0-180 degree
+                light: Math.floor(data.brightness * 255 / 100), //0-255 //8bit
+            }
+        }
+        console.log(outgoing);
+        socket.broadcast.emit("/esp/control", outgoing);
     });
 
     socket.on("esp/other", async (data) => {
