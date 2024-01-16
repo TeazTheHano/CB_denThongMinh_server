@@ -34,6 +34,18 @@ let indexInfoContent = `
     <div class="modal-close-btn-bottom">Đóng</div>
 </div>`;
 
+let alarmInfoContent = `
+<div class="modal-container">
+    <h1 class="modal-container-h1" id="indexInfoModalH1">Cảnh Báo</h1>
+    <div class="modal-container-content text-center" id="indexInfoModalP">Có rung chấn tại vùng lân cận, hãy kiểm tra trong mục thông báo! </div>
+    <div class="modal-close-btn-x">
+        <span class="material-symbols-outlined">
+            close
+        </span>
+    </div>
+    <div class="modal-close-btn-bottom">Đóng</div>
+</div>`;
+
 let indexInfo = document.querySelectorAll(".index-info");
 if (indexInfo.length > 0) {
     indexInfo.forEach(function (element) {
@@ -51,7 +63,6 @@ if (indexInfo.length > 0) {
         });
     });
 }
-
 
 // FIXME: NOTIFICATION SCRIPT SECTION
 
@@ -88,9 +99,26 @@ function fetchNoti() {
             notiData = data.noti;
             console.log(notiData);
             // noti gen
+            let isNotiCreatedToday = false;
             notiData.forEach(function (element) {
                 let noti = new NotiGen(element.title, element.content, element.time, element.type, element.isNotiNew, element.isRead);
-                console.log(noti);
+                // console.log(noti);
+                //check if noti is newly create in  today
+                if (isNotiCreatedToday == false) {
+                    let today = new Date();
+                    let notiTime = new Date(noti.notiTime);
+                    if (notiTime.getDate() == today.getDate() && notiTime.getMonth() == today.getMonth() && notiTime.getFullYear() == today.getFullYear()) {
+                        const dialog = document.createElement("dialog");
+                        dialog.classList.add("modal-background");
+                        dialog.id = "indexInfoModal";
+                        dialog.innerHTML = alarmInfoContent;
+                        document.querySelector("body").appendChild(dialog);
+                        dialog.removeAttribute("closed");
+                        dialog.setAttribute("open", "");
+                        findAndCloseModal();
+                        isNotiCreatedToday = true;
+                    }
+                }
                 notiGenArray.push(noti);
             });
             // noti center

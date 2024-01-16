@@ -162,6 +162,7 @@ router.get("/web/api/getNoti", async (req, res, next) => {
   //auth check here
   try {
     let noti = await accountModel.findOne({ deviceID: id }, { noti: 1 });
+    noti.noti = noti.noti.sort((a,b) => b.time - a.time);
     if (noti != null) {
       res.json(noti).status(200);
     } else {

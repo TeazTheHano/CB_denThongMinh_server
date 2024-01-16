@@ -141,7 +141,7 @@ io.on("connection", (socket) => {
                             time: Date.now(),
                             type: "alarm",
                             title: "Earthquake warning",
-                            content: "Earthquake warning. Please check your device",
+                            content: "Earthquake warning. There is an earthquake in your area. Please be careful. DeviceID: " + data.clientID + "",
                             isRead: false,
                             isNotiNew: true,
                             isActive: true,
