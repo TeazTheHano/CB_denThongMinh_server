@@ -87,15 +87,19 @@ io.on("connection", (socket) => {
         else {
             //add to mongodb
             try {
-                acc = await accountModel.findOne({ deviceID: data.clientID });
-                acc.measure.push({
-                    time: Date.now(),
-                    temp: data.data1.temp,
-                    humi: data.data1.humi,
-                    dust: data.data1.dust,
-                    mq7: data.data1.mq7,
+                let res = await accountModel.updateOne({ deviceID: data.clientID }, {
+                    $push: {
+                        measure: {
+                            time: Date.now(),
+                            temp: data.data1.temp,
+                            humi: data.data1.humi,
+                            dust: data.data1.dust,
+                            mq7: data.data1.mq7,
+                        }
+                    }
                 })
-                await acc.save();
+                if (res.acknowledged) console.log("added data to deviceID: " + data.clientID);
+                else console.log("failed to add data");
             } catch (error) {
                 console.log(error);
             }
