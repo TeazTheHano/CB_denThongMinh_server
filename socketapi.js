@@ -87,7 +87,7 @@ io.on("connection", (socket) => {
         else {
             //add to mongodb
             try {
-                acc = await accountModel.findOne({ id: data.clientID });
+                acc = await accountModel.findOne({ deviceID: data.clientID });
                 acc.measure.push({
                     time: Date.now(),
                     temp: data.data1.temp,
@@ -125,7 +125,7 @@ io.on("connection", (socket) => {
         socket.broadcast.emit("/esp/control", outgoing);
     });
 
-    socket.on("esp/other", async (data) => {
+    socket.on("/esp/other", async (data) => {
         console.log(`[SOCKET] message from ${data.clientID} on topic esp/other`);
         if (data.data == "RUNG") {
             try {
