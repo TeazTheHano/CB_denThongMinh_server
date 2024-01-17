@@ -1,4 +1,5 @@
 // Fetch data and create chart inside the fetch callback
+
 function getDeviceData1() {
     fetch("/web/api/getData")
         .then(response => response.json())
@@ -18,7 +19,7 @@ function getDeviceData1() {
             document.getElementById('mapHumid').innerText = humi[humi.length - 1];
             document.getElementById('mapAq').innerText = dust[dust.length - 1];
             document.getElementById('mapGas').innerText = mq7[mq7.length - 1];
-            
+
             var dataChart = {
                 labels: labels,
                 datasets: [
@@ -69,6 +70,8 @@ function getDeviceData1() {
                     }
                 }
             };
+
+            ValueRange()
 
             // Get the canvas element and render the chart
             var ctx = document.getElementById('myChart').getContext('2d');

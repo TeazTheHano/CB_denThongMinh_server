@@ -37,10 +37,14 @@ const createPopUp = (currentFeature) => {
     const mapTemp = document.getElementById('mapTemp');
     const mapHumid = document.getElementById('mapHumid');
     const mapAq = document.getElementById('mapAq');
+    const mapGas = document.getElementById('mapGas');
 
     mapTemp.innerHTML = currentFeature.properties.sensorData.temperature;
     mapHumid.innerHTML = currentFeature.properties.sensorData.humidity;
     mapAq.innerHTML = currentFeature.properties.sensorData.dust;
+    mapGas.innerHTML = currentFeature.properties.sensorData.gas;
+    ValueRange();
+
 };
 
 
@@ -49,8 +53,8 @@ const map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/mapbox/streets-v12', // style URL
 
-    center: [106.2350, 22.6890], // starting position [lng, lat]
-    zoom: 12, // starting zoom
+    center: [106.2500, 22.6590], // starting position [lng, lat]
+    zoom: 14, // starting zoom
 
 });
 

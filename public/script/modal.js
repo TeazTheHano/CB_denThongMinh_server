@@ -20,12 +20,8 @@ findAndCloseModal();
 /* add index-info */
 let indexInfoContent = `
 <div class="modal-container">
-    <h1 class="modal-container-h1" id="indexInfoModalH1">heeeheheh</h1>
-    <div class="modal-container-content" id="indexInfoModalP">Lorem ipsum dolor sit amet, consectetur
-        adipisicing elit.
-        Exercitationem laborum repudiandae sunt perspiciatis nam officiis labore dicta
-        obcaecati. Voluptate, ducimus quidem eligendi cum molestiae aliquam maxime temporibus
-        delectus officia velit!</div>
+    <h1 class="modal-container-h1" id="indexInfoModalH1">Thông tin về chỉ số</h1>
+    <div class="modal-container-content" id="indexInfoModalP">Thông tin hiện ở đây!</div>
     <div class="modal-close-btn-x">
         <span class="material-symbols-outlined">
             close
