@@ -7,18 +7,18 @@ function getDeviceData1() {
             console.log(data[0].measure);
 
             // Extract labels dynamically from the API response
-            var labels = data[0].measure.map(element => element.time.slice(11, 19));
-            var temp = data[0].measure.map(element => element.temp);
-            var humi = data[0].measure.map(element => element.humi);
-            var dust = data[0].measure.map(element => element.dust);
-            var mq7 = data[0].measure.map(element => element.mq7);
+            var labels = data[0].measure.slice(-30).map(element => element.time.slice(11, 19));
+            var temp = data[0].measure.slice(-30).map(element => element.temp);
+            var humi = data[0].measure.slice(-30).map(element => element.humi);
+            var dust = data[0].measure.slice(-30).map(element => element.dust);
+            var mq7 = data[0].measure.slice(-30).map(element => element.mq7);
 
             // query
             document.getElementById('mapTemp').innerText = temp[temp.length - 1];
             document.getElementById('mapHumid').innerText = humi[humi.length - 1];
             document.getElementById('mapAq').innerText = dust[dust.length - 1];
             document.getElementById('mapGas').innerText = mq7[mq7.length - 1];
-
+            
             var dataChart = {
                 labels: labels,
                 datasets: [
